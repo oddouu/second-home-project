@@ -16,7 +16,7 @@ const User          = require("./models/user"); */
 
 
 mongoose
-  .connect('mongodb://localhost/ironhack-second-project-web-app', {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
   })
   .then(x => {
@@ -120,7 +120,7 @@ app.use('/js', express.static(__dirname + '/node_modules/summernote/src/js'));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 // default value for title local
-app.locals.title = 'Ironhack 2nd Project - Web Application';
+app.locals.title = 'Second Home';
 
 // add auth routes
 const auth = require('./routes/auth-routes');
