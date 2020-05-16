@@ -34,10 +34,16 @@
     <label for="inputDescription">Description</label>
   </div>
 
-  <div class="form-label-group">
-    <input name="location" type="text" id="inputLocation" class="form-control" placeholder="Location" required>
-    <label for="inputLocation">Location</label>
+  <div class="form-label-group" id="input-styling-address">
+
+    <div id="map-example-container"></div>
+    <input name="location" type="search" id="input-map" class="form-control" placeholder="Location" />
+      {{!-- <label for="input-map">Location</label> --}}
+
+
   </div>
+
+
 
   <div class="form-label-group">
     <input type="file" id="file-input" class="form-control-file" name="image" placeholder="Image" required>

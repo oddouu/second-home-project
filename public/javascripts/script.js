@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 }, false);
 
+
 $(document).ready(function () {
   $('[data-toggle="popover"]').popover('toggle');
 

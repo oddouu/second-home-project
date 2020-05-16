@@ -1,4 +1,3 @@
-
 body {
   padding: 0;
   margin-top: 50px;
@@ -283,4 +282,68 @@ a {
   margin-left: .75rem;
 }
 
+// MAP STYLE
 
+#map-example-container {
+  height: 250px
+}
+
+// AUTOCOMPLETE FORM STYLE
+#input-styling-address input {
+  display: inline-block;
+
+   margin: 0em;
+  
+  
+  padding: 1em 0 1em 45px;
+}
+
+#input-styling-address input:focus,
+#input-styling-address input:active {
+  outline: 0;
+  border-color: #aaaaaa;
+  background: #ffffff;
+}
+
+#input-styling-address .ap-nostyle-dropdown-menu {
+  box-shadow: none;
+  border: 1px solid #dadada;
+  border-radius: 0;
+  background: #fff;
+  width: 100%;
+}
+
+#input-styling-address .ap-nostyle-input-icon {
+  display: block;
+  position: absolute;
+  background: none;
+  border: none;
+}
+
+#input-styling-address .algolia-places-nostyle {
+  width: 100%;
+}
+
+#input-styling-address .ap-nostyle-icon-pin {
+  display:block;
+  left: 5px;
+  top: 10px;
+}
+
+#input-styling-address .ap-nostyle-icon-clear {
+  display:none;
+  right: 5px;
+  top: 15px
+}
+
+#input-styling-address input:hover {
+  border-color: silver;
+}
+
+#input-styling-address input::placeholder {
+  color: #aaaaaa;
+}
+
+// #input-styling-address .ap-nostyle-suggestion {
+//   border-bottom: 1px solid #efefef;
+// }
