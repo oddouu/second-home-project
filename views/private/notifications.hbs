@@ -1,0 +1,27 @@
+<h1>This is what you people showed interested in, are you going to give these items away?</h1>
+
+{{#each listings}}
+<h1>{{name}}</h1>
+
+<a href="/listings/{{this._id}}">{{this.name}}</a>
+
+{{#each this.wantedBy}}
+{{log this}}
+<p>wanted by: {{this.username}}</p>
+  {{!-- <div class="notifications"> --}}
+<form action="/send-email/{{this._id}}" method="POST">
+    <textarea name="message" cols="30" rows="10"></textarea>
+
+  <label for="">Send an email to: {{this.username}}</label>
+  <button type="submit"> Send</button>
+</form>
+  {{!-- </div> --}}
+{{/each}}
+
+{{/each}}
+
+{{#if successMessage}}
+{{successMessage}}
+{{/if}}
+
+<a href="/">Bring me back to the home page, please</a>

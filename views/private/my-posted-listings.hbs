@@ -1,0 +1,52 @@
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1>My posted listings</h1>
+        <p class="lead text-muted">This is what you have posted on the site. Check the status of your things:</p>
+        <p>
+            <a href="/listings/add" class="btn btn-primary my-2">Add a new listing here!</a>
+            <a href="/listings" class="btn btn-secondary my-2">Go back to the list</a>
+        </p>
+    </div>
+</section>
+
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+
+
+            {{#each listings}}
+
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <figure class="figure">
+                        <img src="{{this.imgPath}}" class="card-img-top figure-img img-fluid rounded" style="width : 100%;
+                        height: 15vw; 
+                        object-fit: cover;" alt="{{this.name}}">
+                        <figcaption class="figure-caption text-right pr-3 mr-3 my-2">{{this.listingType}}</figcaption>
+                    </figure>
+
+                    <div class="card-body">
+                        <p class="card-text">{{this.name}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="/listings/{{this._id}}" class="btn btn-sm btn-outline-secondary">Details</a>
+                                <a href="/listings/{{this._id}}/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <a href="/listings/{{this._id}}/delete" class="btn btn-sm btn-outline-danger">Delete</a>
+                            </div>
+                            <small class="text-muted">Wanted
+                                <span class="badge badge-dark">
+                                    {{this.wantedBy.length}}
+                                </span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{/each}}
+
+        </div>
+    </div>
+</div>

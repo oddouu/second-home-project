@@ -1,0 +1,109 @@
+<p>
+  <a href="/listings"> Go back</a>
+</p>
+
+<div class="container-fluid">
+  <div class="card-group row">
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div id="carouselControls" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            {{#each listing.imgPath}}
+            <div class="carousel-item active">
+              <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="w-100 d-block img-fluid"
+                  alt="{{listing.name}}" style="display: block;
+              margin-left: auto;
+              margin-right: auto;"></a>
+            </div>
+            {{/each}}
+          </div>
+          <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+
+        <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="card-img-top" alt="{{listing.name}}" style="display: block;
+                  margin-left: auto;
+                    margin-right: auto;
+                    width: 50%;">
+        </a>
+        <div class="card-body">
+          <p class="figure-caption text-rigth">{{listing.listingType}}</p>
+          <h5 class="card-title">{{listing.name}}</h5>
+          <p class="card-text">Wanted by {{wantedCount}} users</p>
+          <div class="d-flex justify-content-end">
+            {{#if isCreator}}
+
+            <div class="btn-group">
+              
+                <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
+              
+              <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
+                <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
+              </form>
+            </div>
+
+            {{else}}
+
+            <form action="/listings/{{listing._id}}/wanted" method="post">
+              <input class="btn btn-primary" type="submit" value="I want this" {{> error this}} {{> success this}}>
+            </form>
+
+            {{/if}}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-body text-center">
+          <h5 class="card-title">Posted by: {{listing.author.username}} </h5>
+          <p class="card-text"><b>{{listing.location}}</b></p>
+          <hr>
+
+          <p class="card-text px-5">{{listing.description}}</p>
+
+          <hr>
+
+          {{#unless currentUser}}
+          <p> <a href="/login">Login</a> or <a href="/signup">Signup</a> to contact this user!</p>
+          {{/unless}}
+
+          {{#unless isCreator}}
+          {{#if currentUser}}
+          <div class="card">
+            <div class="card-body">
+              <form action="/send-email/{{listing.author._id}}" method="POST">
+                <div class="input-group text-left d-flex flex-column">
+                  <textarea name="message" class="message" id="message" cols="30" rows="10" class="w-75 form-control"></textarea>
+                </div>
+                <p>Send an email to: {{listing.author.username}}</p>
+                <input type="submit" class="btn btn-primary" value="Send">
+              </form>
+            </div>
+          </div>
+          {{/if}}
+          {{/unless}}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>

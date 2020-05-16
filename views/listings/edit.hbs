@@ -1,0 +1,51 @@
+<form action="/listings/{{listing._id}}/edit" method="POST" enctype="multipart/form-data" class="form-signin">
+    <div class="text-center mb-4">
+        <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Edit your listing</h1>
+        <p>What do you need to edit?
+        </p>
+    </div>
+
+    <div class="form-label-group">
+        <input name="name" type="text" id="inputName" class="form-control" value="{{listing.name}}" required autofocus>
+        <label for="inputName">Name</label>
+    </div>
+
+    <div class="form-label-group">
+        <select value="{{listing.listingType}}" name="listingType" class="custom-select d-block w-100 form-control"
+            id="listing-type" required>
+            <option>Offer</option>
+            <option>Want</option>
+        </select>
+    </div>
+
+    <div class="form-label-group">
+        <input name="description" type="text" id="inputDescription" class="form-control" value="{{listing.description}}"
+            required>
+        <label for="inputDescription">Description</label>
+    </div>
+
+    <div class="form-label-group">
+        <input name="location" type="text" id="inputLocation" class="form-control" value="{{listing.location}}"
+            required>
+        <label for="inputLocation">Location</label>
+    </div>
+
+    <div class="form-label-group">
+        <input type="file" id="file-input" name="image" value="{{listing.imgPath}}">
+        <label for="file-input">Upload images</label>
+    </div>
+
+    <div class="mb-3">
+        <label>
+            <span>Changed your mind? </span>
+            <a href="/listings">Go back</a>
+        </label>
+    </div>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" {{> error this}} {{> success this}}>Edit!</button>
+
+    <form action="/listings/{{listing._id}}/delete" method="POST">
+        <button class="btn btn-lg btn-danger btn-block" type="submit">DELETE</button>
+    </form>
+</form>

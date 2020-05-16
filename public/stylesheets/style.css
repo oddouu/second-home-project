@@ -1,0 +1,217 @@
+body {
+  padding: 0;
+  margin-top: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%; }
+
+a {
+  color: #00B7FF; }
+
+.masthead {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url("https://source.unsplash.com/BtbjCFUvBXs/1920x1080");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; }
+
+#page-content {
+  flex: 1 0 auto; }
+
+#sticky-footer {
+  flex-shrink: 0; }
+
+.jumbotron {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-bottom: 0;
+  background-color: #fff; }
+
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: 6rem;
+    padding-bottom: 6rem; } }
+
+.jumbotron p:last-child {
+  margin-bottom: 0; }
+
+.jumbotron h1 {
+  font-weight: 300; }
+
+.jumbotron .container {
+  max-width: 40rem; }
+
+.form-signin {
+  width: 100%;
+  max-width: 420px;
+  padding: 15px;
+  margin: auto; }
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem; }
+
+.form-label-group > input,
+.form-label-group > label {
+  height: 3.125rem;
+  padding: .75rem; }
+
+.form-label-group > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
+  /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  pointer-events: none;
+  cursor: text;
+  /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out; }
+
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent; }
+
+.form-label-group input:-ms-input-placeholder {
+  color: transparent; }
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent; }
+
+.form-label-group input::-moz-placeholder {
+  color: transparent; }
+
+.form-label-group input::placeholder {
+  color: transparent; }
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: 1.25rem;
+  padding-bottom: .25rem; }
+
+.form-label-group input:not(:placeholder-shown) ~ label {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  font-size: 12px;
+  color: #777; }
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; }
+
+/* Fallback for Edge
+-------------------------------------------------- */
+@supports (-ms-ime-align: auto) {
+  .form-label-group > label {
+    display: none; }
+  .form-label-group input::-ms-input-placeholder {
+    color: #777; } }
+
+/* Fallback for IE
+-------------------------------------------------- */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .form-label-group > label {
+    display: none; }
+  .form-label-group input:-ms-input-placeholder {
+    color: #777; } }
+
+.container {
+  max-width: 960px; }
+
+/*
+ * Custom translucent site header
+ */
+.site-header {
+  background-color: rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px); }
+
+.site-header a {
+  color: #999;
+  transition: ease-in-out color .15s; }
+
+.site-header a:hover {
+  color: #fff;
+  text-decoration: none; }
+
+/*
+ * Dummy devices (replace them with your own or something else entirely!)
+ */
+.product-device {
+  position: absolute;
+  right: 10%;
+  bottom: -30%;
+  width: 300px;
+  height: 540px;
+  background-color: #333;
+  border-radius: 21px;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg); }
+
+.product-device::before {
+  position: absolute;
+  top: 10%;
+  right: 10px;
+  bottom: 10%;
+  left: 10px;
+  content: "";
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px; }
+
+.product-device-2 {
+  top: -25%;
+  right: auto;
+  bottom: 0;
+  left: 5%;
+  background-color: #e5e5e5; }
+
+/*
+ * Extra utilities
+ */
+.flex-equal > * {
+  -ms-flex: 1;
+  flex: 1; }
+
+@media (min-width: 768px) {
+  .flex-md-equal > * {
+    -ms-flex: 1;
+    flex: 1; } }
+
+.overflow-hidden {
+  overflow: hidden; }
+
+.custom-control {
+  position: relative;
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 1.5rem; }
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center; }
+
+.marketing h2 {
+  font-weight: 400; }
+
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem; }
+
+/*# sourceMappingURL=style.css.map */
