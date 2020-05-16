@@ -260,4 +260,14 @@ a {
 #input-styling-address input::placeholder {
   color: #aaaaaa; }
 
+#input-styling-address .ap-nostyle-suggestion {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #efefef; }
+
+#input-styling-address .ap-nostyle-dropdown-menu .ap-nostyle-with-places {
+  display: flex;
+  align-items: center; }
+
 /*# sourceMappingURL=style.css.map */
