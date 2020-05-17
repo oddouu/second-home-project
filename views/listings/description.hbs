@@ -67,7 +67,16 @@
               {{else}}
               <div>
                 <form action="/listings/{{listing._id}}/wanted" method="post">
-                  <input class="btn btn-primary" type="submit" value="I want this">
+                  <input class="btn btn-primary
+                  
+                  {{#unless IsWantedByCurrentUser}}                  
+                   " type="submit" value="I want this">
+                   {{/unless}}
+
+                   {{#if IsWantedByCurrentUser}}
+                  active" type="submit" value="Wanted">
+                   {{/if}}
+                   
                 </form>
               </div>
 

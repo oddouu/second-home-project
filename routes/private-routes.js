@@ -89,7 +89,7 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
     let currentUser;
     let isCreator;
 
-
+    // If user is not logged in, shows an error message
     if (req.session.currentUser) {
         currentUser = req.session.currentUser._id;
     } else {
@@ -100,13 +100,14 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
                 res.render("listings/description", {
                     listing: retrievedListing,
                     currentUser: currentUser,
-                    // GET WANTED COUNT
                     wantedCount: retrievedListing.wantedBy.length,
                     errorMessage: "User needs to login in order to perform this operation"
                 });
                 return;
             });
     }
+
+
 
     Listing.findById(listingId)
         .populate('author')
@@ -118,36 +119,49 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
                         isCreator = true;
                     }
 
-                    // prevent user to wanting the same item twice
+                    // If already wanted the item, removes the element from the array of the user, from the array of the author and from the array of the listings and redirects to the listing description
                     if (userIFound.likedListings.includes(listingId)) {
-                        console.log('You already wanted this object');
 
-                        res.render('listings/description', {
-                            listing: foundListing,
-                            errorMessage: "Hey silly 😉, you already added this item to your want list, no need to re-add!",
-                            isCreator,
-                            wantedCount: foundListing.wantedBy.length,
-                            currentUser
+                        // removing listing id from current user's wanted listings
+                        User.updateOne({
+                            _id: currentUser
+                        }, {
+                            $pullAll: {
+                                likedListings: [listingId]
+                            }
+                        }).then(() => {
+
+                            // removing listing id from author's listings to give
+                            User.updateOne({
+                                _id: foundListing.author
+                            }, {
+                                $pullAll: {
+                                    listingsToGive: [listingId]
+                                }
+                            }).then(() => {
+
+                                // removing current user id from listing's users
+                                Listing.updateOne({
+                                    _id: listingId
+                                }, {
+                                    $pullAll: {
+                                        wantedBy: [currentUser]
+                                    }
+                                }).then(() => {
+                                    res.redirect(`/listings/${listingId}`);
+                                });
+                            });
                         });
                         return;
-
                     }
 
                     // prevent listing author to want their own item
                     if (userIFound.createdListings.includes(listingId)) {
                         console.log('You cannot want an object that you created');
-
-                        res.render('listings/description', {
-                            listing: foundListing,
-                            errorMessage: "Hey silly 😉, you can't want an object that you created yourself!",
-                            isCreator,
-                            wantedCount: foundListing.wantedBy.length,
-                            currentUser
-                        });
+                        res.redirect(`/listings/${listingId}`);
                         return;
-
-
                     } else {
+                        // if the user doesn't want the item already, pushes the listing Id to the likedListings of the currentuser array
                         User.update({
                                 _id: currentUser
                             }, {
@@ -155,9 +169,7 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
                                     likedListings: listingId
                                 }
                             }).then(() => {
-
-
-                                // Find email address to send to
+                                // ...then pushes the current user id to the wantedby array of the listing document
                                 Listing.findOneAndUpdate({
                                         _id: listingId
                                     }, {
@@ -167,10 +179,7 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
                                     })
                                     .populate('author')
                                     .then(foundListing => {
-                                        // stores found author in a variable in order to use it in the next promise
-                                        // const foundAuthor = foundListing.author;
-
-                                        // pushes the wanted listing into author's listingsToGive array
+                                        // ...lastly, pushes the wanted listing into author's listingsToGive array and redirects the user to the listing description page - the wantedby count should be +1
                                         User.update({
                                                 _id: foundListing.author._id
                                             }, {
@@ -179,14 +188,7 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
                                                 }
                                             })
                                             .then(() => {
-
-                                                res.render('listings/description', {
-                                                    listing: foundListing,
-                                                    successMessage: 'The listing you want was just added (+) to your list! 😃',
-                                                    isCreator,
-                                                    wantedCount: foundListing.wantedBy.length,
-                                                    currentUser
-                                                });
+                                                res.redirect(`/listings/${listingId}`);
                                             });
                                     });
                             })
@@ -235,18 +237,5 @@ router.post('/send-email/:receiverId', (req, res, next) => {
             });
         });
 });
-
-// DELETE LISTING 
-
-
-// router.get("/private", (req, res, next) => {
-//   const currentUser = req.session.currentUser;
-//   Listing.find({ author: currentUser, {$et: listingType: 'offer'}}) // {$eq: 'currentUser'} 
-//   .then(allUserListings => {
-//       res.render('private/listings-liked', {
-//           listings: allUserListings
-//       });
-//   });
-// });
 
 module.exports = router;

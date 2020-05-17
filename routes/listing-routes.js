@@ -65,6 +65,7 @@ router.get("/listings/:listingId", (req, res) => {
     const listingId = req.params.listingId;
     let currentUser;
     let isCreator;
+    let IsWantedByCurrentUser;
 
     if (req.session.currentUser) {
         currentUser = req.session.currentUser._id;
@@ -76,15 +77,25 @@ router.get("/listings/:listingId", (req, res) => {
             if (retrievedListing.author._id == currentUser) {
                 isCreator = true;
             }
+            if (currentUser) {
+                User.findById(currentUser)
+                    .then((userIFound)=> {
 
-            res.render("listings/description", {
-                listing: retrievedListing,
-                isCreator: isCreator,
-                currentUser: currentUser,
-                // GET WANTED COUNT
-                wantedCount: retrievedListing.wantedBy.length
-            });
-            return;
+                        if (userIFound.likedListings.includes(listingId)) {
+                            IsWantedByCurrentUser = true;
+                        }
+
+                        res.render("listings/description", {
+                            listing: retrievedListing,
+                            isCreator: isCreator,
+                            currentUser: currentUser,
+                            // GET WANTED COUNT
+                            wantedCount: retrievedListing.wantedBy.length,
+                            IsWantedByCurrentUser
+                        });
+                        return;
+                    });
+            }
         });
 });
 
