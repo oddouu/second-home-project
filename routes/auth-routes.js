@@ -67,8 +67,18 @@ router.post("/signup", uploadCloud.single('image'), (req, res, next) => {
     const location = req.body.location;
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
-    const imgPath = req.file.url;
-    const imgName = req.file.originalname;
+
+    let imgPath;
+    let imgName;
+
+    if (req.file) {
+        imgPath = req.file.url;
+        imgName = req.file.originalname;
+
+    } else {
+        imgPath = '/images/corgiswimflip.gif';
+        imgName = 'default';
+    }
 
     if (username === "" || password === "") {
         res.render("auth/signup", {

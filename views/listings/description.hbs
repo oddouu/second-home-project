@@ -4,18 +4,18 @@
   </p>
 
   {{#if isCreator}}
-    <span class="my-2 py-2 mr-2 pr-2 d-flex flex-row">
+  <span class="my-2 py-2 mr-2 pr-2 d-flex flex-row">
     <form action="/listings/{{listing._id}}/edit-picture" method="POST" enctype="multipart/form-data"
       class="form-signin d-flex flex-row">
       <input type="file" id="file-input" class="form-control-file" name="image" placeholder="Change Picture">
       <input type="submit" class="btn btn-sm btn-outline-secondary" value="submit">
     </form>
-    </span>
+  </span>
   {{/if}}
 </div>
 
 <div class="container-fluid">
-  <div class="card-group row">
+  <div class=" row">
     <div class="col-12 col-lg-7">
       <div class="card">
         <div id="carouselControls" class="carousel slide my-1 py-1" data-ride="carousel">
@@ -92,7 +92,6 @@
                 </form>
               </div>
 
-
               {{/if}}
 
 
@@ -105,26 +104,32 @@
 
             <hr>
             <p class="card-text pl-2 mr-4 ml-2 pr-4">
-            <div><strong>Description</strong></div><br>{{listing.description}}</p>
+            <p><strong>Description</strong></p>{{listing.description}}</p>
           </div>
+          <div>
+
+            <hr>
+            <p><strong>Location</strong></p>
+            <p class="card-text">{{listing.location}}</p>
+            <div id="static-location" lat={{listing.lat}} lng={{listing.lng}} class="d-none"></div>
+            <div id="map-container" class="py-3 my-3"></div>
+          </div>
+
 
         </div>
       </div>
 
-
     </div>
 
-    <div class="col-12 col-lg-5">
+    <div class="col-12 col-lg-5 d-flex flex-column">
       <div class="card">
         <div class="card-body text-center">
-          <img src="{{listing.author.imgPath}}" alt="">
+          <div class="d-flex justify-content-center pt-1 mt-1 pb-2 mb-2">
+            <img
+              style="border-radius: 50%; width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto"
+              src="{{listing.author.imgPath}}" alt="">
+          </div>
           <h5 class="card-title">Posted by: {{listing.author.username}} </h5>
-
-          <p class="card-text"><b>{{listing.location}}</b></p>
-
-          <hr>
-          <div id="static-location" lat={{listing.lat}} lng={{listing.lng}} class="d-none"></div>
-          <div id="map-container" class="py-3 my-3"></div>
 
 
           {{#unless currentUser}}
@@ -133,28 +138,42 @@
 
 
 
-        </div>
-      </div>
 
-      {{#unless isCreator}}
-      {{#if currentUser}}
-      <div class="card py-2 my-2">
-        <div class="card-body">
-          <p class="card-text text-center py-2">If you're interested, why don't you send an email to
-            <strong>{{listing.author.username}}</strong>?</p>
-          <hr>
-          <form action="/send-email/{{listing.author._id}}" method="POST">
-            <div class="input-group text-left d-flex flex-column">
-              <textarea name="message" class="message" id="message" cols="30" rows="10"
-                class="w-75 form-control"></textarea>
-              <hr>
-              <input type="submit" class="btn btn-primary" value="Send">
-          </form>
+          {{#unless isCreator}}
+          {{#if currentUser}}
+
+          <div class="pt-5 mt-5">
+            <hr>
+            <p class="card-text pt-4 mt-4">If you're interested, why don't you send an email to
+              <strong>{{listing.author.username}}</strong>?</p>
+
+            <form action="/send-email/{{listing.author._id}}" method="POST" class="form-signin ">
+              
+              <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
+                <label for="pickup-date" class="text-left">
+                  <span class="text-success mr-2"><i class="fa fa-calendar" aria-hidden="true"></i></span>  
+                  Schedule a pick-up <strong>date</strong>:</label>
+                <input type="date" id="pickup-date" name="pickup-date" class="form-control" required>
+              </div>
+
+              <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
+                <label for="message" class="text-left">
+                  <span class="text-success mr-2"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                    Write here your <strong>email</strong>:</label>
+                <textarea name="message" class="message form-control" id="message" cols="20" rows="10"
+                  class="form-control"></textarea>
+              </div>
+              <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
+                <input type="submit" class="btn btn-primary" value="Send">
+              </div>
+            </form>
+
+          </div>
+          {{/if}}
+          {{/unless}}
         </div>
       </div>
     </div>
-    {{/if}}
-    {{/unless}}
 
   </div>
 </div>

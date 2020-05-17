@@ -117,8 +117,17 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
     const author = req.session.currentUser._id;
     // console.log(author);
 
-    const imgPath = req.file.url;
-    const imgName = req.file.originalname;
+    let imgPath;
+    let imgName;
+
+     if (req.file) {
+         imgPath = req.file.url;
+         imgName = req.file.originalname;
+
+     } else {
+         imgPath = '/images/corgiswimflip.gif';
+         imgName = 'default';
+     }
 
     const newListing = new Listing({
         name,

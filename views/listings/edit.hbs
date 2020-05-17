@@ -50,7 +50,7 @@
 
     </div>
 
-{{!--     <div class="form-label-group">
+    {{!--     <div class="form-label-group">
         <input type="file" id="file-input" name="image" value="{{listing.imgPath}}">
         <label for="file-input">Upload images</label>
     </div> --}}
@@ -65,8 +65,10 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit" {{> error this}} {{> success this}}>Edit!</button>
 </form>
 
-    <form action="/listings/{{listing._id}}/delete" method="POST">
+<form action="/listings/{{listing._id}}/delete" method="POST" class="form-signin">
+    <div class="form-label-group">
         <button class="btn btn-lg btn-danger btn-block" type="submit">DELETE</button>
-    </form>
+    </div>
+</form>
 
-    <script src="/javascripts/autocomplete.js"></script>
+<script src="/javascripts/autocomplete.js"></script>
