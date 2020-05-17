@@ -36,7 +36,11 @@
 
   <div class="form-label-group" id="input-styling-address">
 
-    <div id="map-example-container"></div>
+    <div id="map-example-container" class="d-none"></div>
+
+    <input name="lat" type="text" id="input-lat" class="d-none">
+    <input name="lng" type="text" id="input-lng" class="d-none">
+    
     <input name="location" type="search" id="input-map" class="form-control" placeholder="Location" />
       {{!-- <label for="input-map">Location</label> --}}
 
@@ -60,3 +64,7 @@
   <button class="btn btn-lg btn-primary btn-block" type="submit" {{> error this}} {{> success this}}>Submit!</button>
 
 </form>
+
+
+
+  <script src="/javascripts/autocomplete.js"></script>

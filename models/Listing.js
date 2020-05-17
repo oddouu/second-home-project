@@ -44,6 +44,14 @@ const listingSchema = new Schema({
 
         subCategory: {
             type: String,
+        },
+
+        lat: {
+            type: String,
+        },
+
+        lng: {
+            type: String,
         }
     
    }, {

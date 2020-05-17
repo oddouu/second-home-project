@@ -25,9 +25,19 @@
   <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/leaflet/1/leaflet.js"></script>
 
+  {{!-- LEAFLET --}}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+
+
+{{!-- PLACES.JS --}}
+      <script src="https://cdn.jsdelivr.net/npm/places.js@1.18.2"></script>
 
 
 
@@ -99,8 +109,7 @@
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUfJZN1uV7J2dxoszGdIURX7io3rlRBwY&libraries=places&callback=initAutocomplete"
   async defer></script> --}}
 
-  <script src="https://cdn.jsdelivr.net/npm/places.js@1.18.2"></script>
-  <script src="/javascripts/autocomplete.js"></script>
+  
   <script src="/javascripts/script.js"></script>
 </body>
 

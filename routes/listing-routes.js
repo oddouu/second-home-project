@@ -11,7 +11,8 @@ router.get("/listings/add", (req, res) => {
     const currentUser = req.session.currentUser;
 
     res.render("listings/create", {
-        currentUser
+        currentUser,
+        createForm: true
     });
 });
 
@@ -95,9 +96,15 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
         description,
         listingType,
         location,
+        lat,
+        lng,
         category,
         subCategory
     } = req.body;
+
+
+    console.log("NAME",name);
+    console.log("LOCATION",location);
 
     const author = req.session.currentUser._id;
     // console.log(author);
@@ -113,6 +120,8 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
         imgPath,
         imgName,
         location,
+        lat,
+        lng,
         category,
         subCategory
     });

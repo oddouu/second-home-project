@@ -34,15 +34,15 @@
         </a>
         <div class="card-body">
           <p class="figure-caption text-rigth">{{listing.listingType}}</p>
-          <h5 class="card-title">{{listing.name}}</h5>
+          <h5 class="card-title">{{listing.name}} </h5>
           <p class="card-text">Wanted by {{wantedCount}} users</p>
           <div class="d-flex justify-content-end">
             {{#if isCreator}}
 
             <div class="btn-group">
-              
-                <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
-              
+
+              <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
+
               <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
                 <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
               </form>
@@ -67,6 +67,10 @@
         <div class="card-body text-center">
           <h5 class="card-title">Posted by: {{listing.author.username}} </h5>
           <p class="card-text"><b>{{listing.location}}</b></p>
+
+          <div id="static-location" lat={{listing.lat}} lng={{listing.lng}} class="d-none"></div>
+          <div id="map-example-container" class=""></div>
+
           <hr>
 
           <p class="card-text px-5">{{listing.description}}</p>
@@ -83,7 +87,8 @@
             <div class="card-body">
               <form action="/send-email/{{listing.author._id}}" method="POST">
                 <div class="input-group text-left d-flex flex-column">
-                  <textarea name="message" class="message" id="message" cols="30" rows="10" class="w-75 form-control"></textarea>
+                  <textarea name="message" class="message" id="message" cols="30" rows="10"
+                    class="w-75 form-control"></textarea>
                 </div>
                 <p>Send an email to: {{listing.author.username}}</p>
                 <input type="submit" class="btn btn-primary" value="Send">
@@ -97,13 +102,8 @@
       </div>
     </div>
   </div>
-
-
+</div>
+</div>
 </div>
 
-
-
-</div>
-
-
-</div>
+<script src="/javascripts/static-location.js"></script>

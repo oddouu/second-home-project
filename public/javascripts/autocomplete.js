@@ -1,11 +1,21 @@
+let inputLatLng = $('#input-map');
+let inputLat = $('#input-lat');
+let inputLng = $('#input-lng');
 
-(function() {
+
+
+// AUTOCOMPLETE CODE
+
+(function () {
   var placesAutocomplete = places({
     appId: "plGMYT804R6Q",
     apiKey: "0d1f1cf006a8fd8eaf5421fdbe89e01d",
     container: document.querySelector("#input-map"),
     style: false,
   });
+
+
+  // MAP CODE
 
   var map = L.map('map-example-container', {
     scrollWheelZoom: false,
@@ -45,11 +55,34 @@
 
   function handleOnChange(e) {
     markers
-      .forEach(function(marker, markerIndex) {
+      .forEach(function (marker, markerIndex) {
         if (markerIndex === e.suggestionIndex) {
           markers = [marker];
           marker.setOpacity(1);
           findBestZoom();
+
+          // DOM MANIPULATION ON CHANGE - ADDS LAT AND LONG TO HTML
+
+          const lat = markers[0]._latlng.lat;
+          console.log("lat: ", lat);
+          const lng = markers[0]._latlng.lng;
+          console.log("lng: ", lng);
+          //changes html with inputted coordinates
+          inputLat
+            .attr({
+              'value': lat,
+              'lat': lat
+            });
+
+          inputLng
+            .attr({
+              'value': lng,
+              'lng': lng
+            });
+
+
+
+
         } else {
           removeMarker(marker);
         }
@@ -63,7 +96,7 @@
 
   function handleOnCursorchanged(e) {
     markers
-      .forEach(function(marker, markerIndex) {
+      .forEach(function (marker, markerIndex) {
         if (markerIndex === e.suggestionIndex) {
           marker.setOpacity(1);
           marker.setZIndexOffset(1000);
@@ -75,9 +108,12 @@
   }
 
   function addMarker(suggestion) {
-    var marker = L.marker(suggestion.latlng, {opacity: .4});
+    var marker = L.marker(suggestion.latlng, {
+      opacity: .4
+    });
     marker.addTo(map);
     markers.push(marker);
+    return marker;
   }
 
   function removeMarker(marker) {
@@ -86,6 +122,10 @@
 
   function findBestZoom() {
     var featureGroup = L.featureGroup(markers);
-    map.fitBounds(featureGroup.getBounds().pad(0.5), {animate: true});
+    map.fitBounds(featureGroup.getBounds().pad(0.5), {
+      animate: true
+    });
   }
 })();
+
+
