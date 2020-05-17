@@ -18,10 +18,10 @@ router.get("/listings/add", (req, res) => {
 
 // GET request to get all listings
 router.get('/listings', (req, res) => {
-    let user;
+    let currentUser;
 
     if (req.session.currentUser) {
-        user = req.session.currentUser._id;
+        currentUser = req.session.currentUser._id;
     }
 
 
@@ -32,14 +32,14 @@ router.get('/listings', (req, res) => {
             // console.log('all listings',allListings);
 
             allListings.forEach((listing) => {
-                if (listing.author._id == user) {
+                if (listing.author._id == currentUser) {
                     listing.isAuthor = true;
                 }
             });
 
             res.render('listings/all-listings', {
                 listings: allListings,
-                user
+                currentUser
             });
         });
     // add catch?
