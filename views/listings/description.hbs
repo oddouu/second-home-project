@@ -1,12 +1,12 @@
-<p>
+<p class="my-2 py-2 ml-2 pl-2">
   <a href="/listings"> Go back</a>
 </p>
 
 <div class="container-fluid">
   <div class="card-group row">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-7">
       <div class="card">
-        <div id="carouselControls" class="carousel slide" data-ride="carousel">
+        <div id="carouselControls" class="carousel slide my-1 py-1" data-ride="carousel">
           <div class="carousel-inner">
             {{#each listing.imgPath}}
             <div class="carousel-item active">
@@ -32,78 +32,110 @@
                     margin-right: auto;
                     width: 50%;">
         </a>
-        <div class="card-body">
-          <p class="figure-caption text-rigth">{{listing.listingType}}</p>
-          <h5 class="card-title">{{listing.name}} </h5>
-          <p class="card-text">Wanted by {{wantedCount}} users</p>
-          <div class="d-flex justify-content-end">
-            {{#if isCreator}}
+        <div class="card-body d-flex flex-column">
 
-            <div class="btn-group">
+          <div class="d-flex flex-row justify-content-between pl-2 mr-4 ml-2 pr-4">
+            <div class="">
+              <p class="figure-caption text-rigth">{{listing.listingType}}</p>
+              <h5 class="card-title">{{listing.name}} </h5>
 
-              <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
-
-              <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
-                <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
-              </form>
             </div>
 
-            {{else}}
 
-            <form action="/listings/{{listing._id}}/wanted" method="post">
-              <input class="btn btn-primary" type="submit" value="I want this" {{> error this}} {{> success this}}>
-            </form>
+            <div class="text-center">
 
-            {{/if}}
+              <p class="card-text text-danger
+                            {{#unless errorMessage}}
+                            d-none
+                            {{/unless}}
+                            {{#if errorMessage}}
+                            d-block
+                            {{/if}}        
+                            ">Error</p>
+
+              {{#if isCreator}}
+
+              <div class="btn-group">
+
+                <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
+
+                <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
+                </form>
+              </div>
+
+              {{else}}
+              <div>
+                <form action="/listings/{{listing._id}}/wanted" method="post">
+                  <input class="btn btn-primary" type="submit" value="I want this">
+                </form>
+              </div>
+
+
+              {{/if}}
+
+
+
+              <p class="card-text pt-2">Wanted by {{wantedCount}} users</p>
+            </div>
           </div>
 
+          <div>
+
+            <hr>
+            <p class="card-text pl-2 mr-4 ml-2 pr-4">
+            <div><strong>Description</strong></div><br>{{listing.description}}</p>
+          </div>
 
         </div>
       </div>
+
+
     </div>
 
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-5">
       <div class="card">
         <div class="card-body text-center">
           <h5 class="card-title">Posted by: {{listing.author.username}} </h5>
+
           <p class="card-text"><b>{{listing.location}}</b></p>
 
+          <hr>
           <div id="static-location" lat={{listing.lat}} lng={{listing.lng}} class="d-none"></div>
-          <div id="map-example-container" class=""></div>
+          <div id="map-container" class="py-3 my-3"></div>
 
-          <hr>
-
-          <p class="card-text px-5">{{listing.description}}</p>
-
-          <hr>
 
           {{#unless currentUser}}
           <p> <a href="/login">Login</a> or <a href="/signup">Signup</a> to contact this user!</p>
           {{/unless}}
 
-          {{#unless isCreator}}
-          {{#if currentUser}}
-          <div class="card">
-            <div class="card-body">
-              <form action="/send-email/{{listing.author._id}}" method="POST">
-                <div class="input-group text-left d-flex flex-column">
-                  <textarea name="message" class="message" id="message" cols="30" rows="10"
-                    class="w-75 form-control"></textarea>
-                </div>
-                <p>Send an email to: {{listing.author.username}}</p>
-                <input type="submit" class="btn btn-primary" value="Send">
-              </form>
-            </div>
-          </div>
-          {{/if}}
-          {{/unless}}
+
 
         </div>
       </div>
+
+      {{#unless isCreator}}
+      {{#if currentUser}}
+      <div class="card py-2 my-2">
+        <div class="card-body">
+          <p class="card-text text-center py-2">If you're interested, why don't you send an email to
+            <strong>{{listing.author.username}}</strong>?</p>
+          <hr>
+          <form action="/send-email/{{listing.author._id}}" method="POST">
+            <div class="input-group text-left d-flex flex-column">
+              <textarea name="message" class="message" id="message" cols="30" rows="10"
+                class="w-75 form-control"></textarea>
+              <hr>
+              <input type="submit" class="btn btn-primary" value="Send">
+          </form>
+        </div>
+      </div>
     </div>
+    {{/if}}
+    {{/unless}}
+
   </div>
 </div>
-</div>
-</div>
+
 
 <script src="/javascripts/static-location.js"></script>

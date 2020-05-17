@@ -270,4 +270,7 @@ a {
   display: flex;
   align-items: center; }
 
+#map-container {
+  height: 250px; }
+
 /*# sourceMappingURL=style.css.map */

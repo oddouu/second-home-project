@@ -3,7 +3,7 @@ let staticLocation = $('#static-location');
 let lat = staticLocation[0].attributes.lat.value;
 let lng = staticLocation[0].attributes.lng.value;
 
-var mymap = L.map('map-example-container').setView([lat, lng], 12);
+var mymap = L.map('map-container').setView([lat, lng], 15);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
@@ -15,7 +15,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 
 var circle = L.circle([lat, lng], {
-  color: '#006a4e',
+  color: '#8abaae',
   fillColor: '#b8d5cd',
   fillOpacity: 0.5,
   radius: 500

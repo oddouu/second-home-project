@@ -292,9 +292,9 @@ a {
 #input-styling-address input {
   display: inline-block;
 
-   margin: 0em;
-  
-  
+  margin: 0em;
+
+
   padding: 1em 0 1em 45px;
 }
 
@@ -325,13 +325,13 @@ a {
 }
 
 #input-styling-address .ap-nostyle-icon-pin {
-  display:block;
+  display: block;
   left: 5px;
   top: 10px;
 }
 
 #input-styling-address .ap-nostyle-icon-clear {
-  display:none;
+  display: none;
   right: 5px;
   top: 15px
 }
@@ -345,13 +345,20 @@ a {
 }
 
 #input-styling-address .ap-nostyle-suggestion {
-display: flex;
-align-items: center;
-padding: 10px 0;
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
   border-bottom: 1px solid #efefef;
-  
+
 }
+
 #input-styling-address .ap-nostyle-dropdown-menu .ap-nostyle-with-places {
   display: flex;
   align-items: center;
+}
+
+#map-container {
+  
+  height: 250px;
+
 }
