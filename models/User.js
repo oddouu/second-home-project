@@ -6,8 +6,8 @@ const userSchema = new Schema({
     username: String,
     password: String,
     location: String,
-   /*  role: String, 
-    googleID: String,  */
+    /*  role: String, 
+     googleID: String,  */
 
     // add a foreign ID
     likedListings: [{
@@ -17,13 +17,23 @@ const userSchema = new Schema({
 
     createdListings: [{
         type: Schema.Types.ObjectId, // grabbing the author id of person who is creating listing, from author collection
-            ref: 'Listing' // also add admin. version 
+        ref: 'Listing' // also add admin. version 
     }],
 
     listingsToGive: [{
         type: Schema.Types.ObjectId, // grabbing the author id of person who is creating listing, from author collection
         ref: 'Listing' // also add admin. version 
     }],
+
+    imgName: {
+        type: String, // what if we wanted to upload multiple pictures? more likely the case, [String]
+        default: 'default'
+    },
+
+    imgPath: {
+        type: String, // 
+        default: './public/images/corgiswimflip.gif'
+    }
 
     //will we need to extend the listing id as well, in order to have an array of what listings the offer has separate between "want" and "offer"[ing] as well? Default should be an empty array with a reference to listings collection, and specifically items with the same author id...
 }, {

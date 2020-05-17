@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 /* const passport = require('passport'); */
 const User = require("../models/User");
+const uploadCloud = require('../config/cloudinary.js');
+
 
 /* router.get(
     "/auth/google",
@@ -58,13 +60,15 @@ router.get("/logout", (req, res, next) => {
 
 
 // POST ROUTES
-router.post("/signup", (req, res, next) => {
+router.post("/signup", uploadCloud.single('image'), (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
     const location = req.body.location;
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
+    const imgPath = req.file.url;
+    const imgName = req.file.originalname;
 
     if (username === "" || password === "") {
         res.render("auth/signup", {
@@ -89,7 +93,9 @@ router.post("/signup", (req, res, next) => {
                     username,
                     password: hashPass,
                     email: email,
-                    location: location
+                    location: location,
+                    imgPath: imgPath,
+                    imgName: imgName
                 })
                 .then(() => {
                     res.redirect("/");
