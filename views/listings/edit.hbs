@@ -7,34 +7,53 @@
     </div>
 
     <div class="form-label-group">
-        <input name="name" type="text" id="inputName" class="form-control" value="{{listing.name}}" required autofocus>
+        <input name="name" type="text" id="inputName" class="form-control" value="{{listing.name}}" autofocus>
         <label for="inputName">Name</label>
     </div>
 
     <div class="form-label-group">
         <select value="{{listing.listingType}}" name="listingType" class="custom-select d-block w-100 form-control"
-            id="listing-type" required>
+            id="listing-type">
             <option>Offer</option>
             <option>Want</option>
         </select>
     </div>
 
     <div class="form-label-group">
-        <input name="description" type="text" id="inputDescription" class="form-control" value="{{listing.description}}"
-            required>
+        <select value={{listing.category}} name="category" class="custom-select d-block w-100 form-control"
+            id="category">
+        </select>
+    </div>
+
+    <div class="form-label-group">
+        <select value={{listing.subCategory}} name="subCategory" class="custom-select d-block w-100 form-control"
+            id="subCategory">
+        </select>
+    </div>
+
+    <div class="form-label-group">
+        <input name="description" type="text" id="inputDescription" class="form-control"
+            value="{{listing.description}}">
         <label for="inputDescription">Description</label>
     </div>
 
-    <div class="form-label-group">
-        <input name="location" type="text" id="inputLocation" class="form-control" value="{{listing.location}}"
-            required>
-        <label for="inputLocation">Location</label>
+    <div class="form-label-group" id="input-styling-address">
+
+        <div id="map-example-container" class="d-none"></div>
+
+        <input name="lat" type="text" id="input-lat" class="d-none">
+        <input name="lng" type="text" id="input-lng" class="d-none">
+
+        <input name="location" type="search" id="input-map" class="form-control" value={{listing.location}} />
+        {{!-- <label for="input-map">Location</label> --}}
+
+
     </div>
 
-    <div class="form-label-group">
+{{!--     <div class="form-label-group">
         <input type="file" id="file-input" name="image" value="{{listing.imgPath}}">
         <label for="file-input">Upload images</label>
-    </div>
+    </div> --}}
 
     <div class="mb-3">
         <label>
@@ -44,8 +63,10 @@
     </div>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit" {{> error this}} {{> success this}}>Edit!</button>
+</form>
 
     <form action="/listings/{{listing._id}}/delete" method="POST">
         <button class="btn btn-lg btn-danger btn-block" type="submit">DELETE</button>
     </form>
-</form>
+
+    <script src="/javascripts/autocomplete.js"></script>

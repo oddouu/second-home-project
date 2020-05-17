@@ -1,6 +1,18 @@
-<p class="my-2 py-2 ml-2 pl-2">
-  <a href="/listings"> Go back</a>
-</p>
+<div class="d-flex justify-content-between">
+  <p class="my-2 py-2 ml-2 pl-2">
+    <a href="/listings"> Go back</a>
+  </p>
+
+  {{#if isCreator}}
+    <span class="my-2 py-2 mr-2 pr-2 d-flex flex-row">
+    <form action="/listings/{{listing._id}}/edit-picture" method="POST" enctype="multipart/form-data"
+      class="form-signin d-flex flex-row">
+      <input type="file" id="file-input" class="form-control-file" name="image" placeholder="Change Picture">
+      <input type="submit" class="btn btn-sm btn-outline-secondary" value="submit">
+    </form>
+    </span>
+  {{/if}}
+</div>
 
 <div class="container-fluid">
   <div class="card-group row">
@@ -71,12 +83,12 @@
                   
                   {{#unless IsWantedByCurrentUser}}                  
                    " type="submit" value="I want this">
-                   {{/unless}}
+                  {{/unless}}
 
-                   {{#if IsWantedByCurrentUser}}
+                  {{#if IsWantedByCurrentUser}}
                   active" type="submit" value="Wanted">
-                   {{/if}}
-                   
+                  {{/if}}
+
                 </form>
               </div>
 

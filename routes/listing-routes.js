@@ -114,9 +114,6 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
     } = req.body;
 
 
-    console.log("NAME", name);
-    console.log("LOCATION", location);
-
     const author = req.session.currentUser._id;
     // console.log(author);
 
@@ -174,63 +171,63 @@ router.post('/listings/:listingId/delete', (req, res) => {
 
     // removing listing id from current user's created listings
     User.updateOne({
+        _id: currentUser
+    }, {
+        $pullAll: {
+            createdListings: [listingId]
+        }
+    }).then(() => {
+
+        // removing listing id from current user's listings to give
+        User.updateOne({
             _id: currentUser
         }, {
             $pullAll: {
-                createdListings: [listingId]
+                listingsToGive: [listingId]
             }
         }).then(() => {
 
-            // removing listing id from current user's listings to give
-            User.updateOne({
-                _id: currentUser
+            // removing listing id from listing's users that liked it
+            User.updateMany({
+                likedListings: listingId
             }, {
                 $pullAll: {
-                    listingsToGive: [listingId]
+                    likedListings: [listingId]
                 }
             }).then(() => {
 
-                // removing listing id from listing's users that liked it
-                User.updateMany({
-                    likedListings: listingId
-                }, {
-                    $pullAll: {
-                        likedListings: [listingId]
-                    }
-                }).then(() => {
+                // NOTIFY USERS ???
 
-                    // NOTIFY USERS ???
+                // delete the listing for real
 
-                    // delete the listing for real
-
-                    Listing.findByIdAndRemove(listingId)
-                        .then(() => {
-                            res.redirect(`/`);
+                Listing.findByIdAndRemove(listingId)
+                    .then(() => {
+                        res.redirect(`/`);
 
 
-                        }).catch((err) => console.log(err));
-                }).catch((err) => console.log(err));
+                    }).catch((err) => console.log(err));
             }).catch((err) => console.log(err));
         }).catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
 });
 
 // POST edit existing listing
 
 // edit existing listing should be done only by user that posted the listing or admin
-router.post('/listings/:listingId/edit', uploadCloud.single('image'), (req, res) => {
+router.post('/listings/:listingId/edit', (req, res) => {
     const listingId = req.params.listingId;
-
     let author = req.session.currentUser._id;
-    console.log(author);
 
-    let imgPath = req.file.url;
-    let imgName = req.file.originalname;
 
     const {
         name,
         description,
         listingType,
-        location
+        location,
+        lat,
+        lng,
+        category,
+        subCategory
     } = req.body;
 
     const updatedListing = {
@@ -238,9 +235,11 @@ router.post('/listings/:listingId/edit', uploadCloud.single('image'), (req, res)
         description,
         listingType,
         author,
-        imgPath,
-        imgName,
-        location
+        location,
+        lat,
+        lng,
+        category,
+        subCategory
     };
 
     Listing.findById(listingId)
@@ -255,13 +254,11 @@ router.post('/listings/:listingId/edit', uploadCloud.single('image'), (req, res)
                     }, updatedListing)
 
                     .then(() => {
-                        res.render('listings/edit', {
-                            successMessage: 'Success!'
-                        });
+                        res.redirect(`/listings/${listingId}`);
                     })
                     .catch((err) => console.log(err));
             } else {
-                res.redirect('/'); //if not author, do something (pass an error message)
+                res.redirect('/'); //if not author, redirects user to root
             }
         })
         .catch((err) => console.log(err));
@@ -269,6 +266,42 @@ router.post('/listings/:listingId/edit', uploadCloud.single('image'), (req, res)
 
 });
 
+
+router.post('/listings/:listingId/edit-picture', uploadCloud.single('image'), (req, res) => {
+    const author = req.session.currentUser._id;
+    const listingId = req.params.listingId;
+
+    const imgPath = req.file.url;
+    const imgName = req.file.originalname;
+
+    const updatedListing = {
+        imgPath,
+        imgName
+    };
+
+    Listing.findById(listingId)
+        .populate('author')
+        .then((foundListing) => {
+
+            if (foundListing.author._id == author) {
+
+                isCreator = true;
+                Listing.update({
+                        _id: listingId
+                    }, updatedListing)
+
+                    .then(() => {
+                        res.redirect(`/listings/${listingId}`);
+                    })
+                    .catch((err) => console.log(err));
+            } else {
+                res.redirect('/'); //if not author, redirects user to root
+            }
+        })
+        .catch((err) => console.log(err));
+
+
+});
 
 
 
