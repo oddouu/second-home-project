@@ -8,18 +8,18 @@ const User = require("../models/User");
 
 
 router.get('/my-posted-listings', (req, res, next) => {
-    let currentUser;
-    if (req.session.currentUser) {
-        currentUser = req.session.currentUser; // is this equal to object id???
 
+    let currentUser;
+
+    // if the current user is logged in, retrives the list of posted listings
+    if (req.session.currentUser) {
+        currentUser = req.session.currentUser;
         User.find({
                 _id: currentUser._id,
             })
             .populate('createdListings')
-            // console.log() what does liked listings consist of again???
             .then(selectedUser => {
-                //console.log('HERE 1', selectedUser);
-                //console.log('HERE 2', selectedUser[0].likedListings);
+                
                 res.render('private/my-posted-listings', {
                     listings: selectedUser[0].createdListings,
                     currentUser
@@ -33,17 +33,17 @@ router.get('/my-posted-listings', (req, res, next) => {
 });
 
 router.get('/my-wanted-listings', (req, res, next) => {
-    let currentUser = req.session.currentUser; // is this equal to object id???
 
+    let currentUser;
 
+    // if the current user is logged in, retrives the list of wanted listings
     if (req.session.currentUser) {
+        currentUser = req.session.currentUser;
         User.find({
                 _id: currentUser._id,
             })
             .populate('likedListings')
             .then(selectedUser => {
-                //console.log('HERE 1', selectedUser);
-                //console.log('HERE 2', selectedUser[0].likedListings);
                 res.render('private/my-wanted-listings', {
                     listings: selectedUser[0].likedListings,
                     currentUser
@@ -52,7 +52,6 @@ router.get('/my-wanted-listings', (req, res, next) => {
     } else {
         res.redirect('/login');
     }
-
 });
 
 router.get('/notifications', (req, res, next) => {
@@ -69,7 +68,6 @@ router.get('/notifications', (req, res, next) => {
                 }
             })
             .then(selectedUser => {
-                // console.log("users:", selectedUser[0].listingsToGive[0].wantedBy[0]);
                 res.render('private/notifications', {
                     listings: selectedUser[0].listingsToGive,
                     currentUser
@@ -107,14 +105,14 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
             });
     }
 
-
-
+    // looks for the listing document that the current user is visiting, and populates its 'author' attribute to use it later
     Listing.findById(listingId)
         .populate('author')
         .then(foundListing => {
             User.findById(currentUser)
                 .then((userIFound) => {
 
+                    // if the current user is the listing's author, triggers the isCreator variable
                     if (foundListing.author._id == currentUser) {
                         isCreator = true;
                     }

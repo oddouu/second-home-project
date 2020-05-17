@@ -79,7 +79,7 @@ router.get("/listings/:listingId", (req, res) => {
             }
             if (currentUser) {
                 User.findById(currentUser)
-                    .then((userIFound)=> {
+                    .then((userIFound) => {
 
                         if (userIFound.likedListings.includes(listingId)) {
                             IsWantedByCurrentUser = true;
@@ -114,8 +114,8 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
     } = req.body;
 
 
-    console.log("NAME",name);
-    console.log("LOCATION",location);
+    console.log("NAME", name);
+    console.log("LOCATION", location);
 
     const author = req.session.currentUser._id;
     // console.log(author);
@@ -164,52 +164,54 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
 router.post('/listings/:listingId/delete', (req, res) => {
 
     let listingId = req.params.listingId;
-    const user = req.session.currentUser._id;
-    let isCreator;
+    const currentUser = req.session.currentUser._id;
 
-    Listing.findById(listingId)
-        .populate('author')
-        .then((foundListing) => {
 
-            if (foundListing.author._id == user) {
+    // Removes the listing id from the listing author's createdListings and listingsToGive arrays. 
+    // then, removes the id from the likedListings array of the user that wanted this item and notifies them.
+    // lastly, deletes the listing document and redirects the current user to the root.
 
-                isCreator = true;
-                Listing.findByIdAndRemove(listingId)
-                    .then(() => {
-                        User.updateMany({
-                                likedListings: {
-                                    $in: [listingId]
-                                },
-                                createdListings: {
-                                    $in: [listingId]
-                                },
-                                listingsToGive: {
-                                    $in: [listingId]
-                                }
-                            }, {
-                                $pull: {
-                                    likedListings: listingId,
-                                    createdListings: listingId,
-                                    listingsToGive: listingId
-                                }
 
-                            })
-                            .then(() => {
-                                res.render("listings/description", {
-                                    successMessage: 'The item has been successfully deleted!'
-                                });
-
-                            });
-
-                    })
-                    .catch((err) => console.log(err));
-            } else {
-                res.redirect('/'); //if not author, do something
+    // removing listing id from current user's created listings
+    User.updateOne({
+            _id: currentUser
+        }, {
+            $pullAll: {
+                createdListings: [listingId]
             }
-        })
-        .catch((err) => console.log(err));
+        }).then(() => {
+
+            // removing listing id from current user's listings to give
+            User.updateOne({
+                _id: currentUser
+            }, {
+                $pullAll: {
+                    listingsToGive: [listingId]
+                }
+            }).then(() => {
+
+                // removing listing id from listing's users that liked it
+                User.updateMany({
+                    likedListings: listingId
+                }, {
+                    $pullAll: {
+                        likedListings: [listingId]
+                    }
+                }).then(() => {
+
+                    // NOTIFY USERS ???
+
+                    // delete the listing for real
+
+                    Listing.findByIdAndRemove(listingId)
+                        .then(() => {
+                            res.redirect(`/`);
 
 
+                        }).catch((err) => console.log(err));
+                }).catch((err) => console.log(err));
+            }).catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
 });
 
 // POST edit existing listing
