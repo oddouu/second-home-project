@@ -30,7 +30,9 @@ $(pickUpDateInput).change(function () {
   let sendToName = sendToField[0].attributes.sendTo.value;
   console.log(sendToName);
   console.log(pickUpDate);
-  message.innerHTML = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.`;
-  console.log(message.innerHTML)
+  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.`;
+  
+
+  $('#message').summernote('pasteHTML', HTMLstring);
 
 });
