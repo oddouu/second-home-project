@@ -23,7 +23,7 @@
             {{#each listing.imgPath}}
             <div class="carousel-item active">
               <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="w-100 d-block img-fluid"
-                  alt="{{listing.name}}" style="display: block;
+                  alt="{{listing.name}}"  style="display: block;
               margin-left: auto;
               margin-right: auto;"></a>
             </div>
@@ -145,23 +145,29 @@
           <div class="pt-5 mt-5">
             <hr>
             <p class="card-text pt-4 mt-4">If you're interested, why don't you send an email to
-              <strong>{{listing.author.username}}</strong>?</p>
+              <span id="send-to" sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
 
             <form action="/send-email/{{listing.author._id}}" method="POST" class="form-signin ">
-              
-              <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
-                <label for="pickup-date" class="text-left">
-                  <span class="text-success mr-2"><i class="fa fa-calendar" aria-hidden="true"></i></span>  
-                  Schedule a pick-up <strong>date</strong>:</label>
-                <input type="date" id="pickup-date" name="pickup-date" class="form-control" required>
-              </div>
 
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
+                <label for="pickup-date" class="text-left">
+                  <span class="text-success mr-2"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                  Schedule a pick-up <strong>date</strong>:</label>
+                <input type="date" id="pickup-date" name="pickup-date" class="form-control" required>
+                <input type="text" id="listing-name" listing="{{listing.name}} class="d-none">
+              </div>
+
+              <div class="input-group d-flex flex-column justify-content-center py-2 my-2 text-left">
                 <label for="message" class="text-left">
                   <span class="text-success mr-2"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    Write here your <strong>email</strong>:</label>
+                  Write here your <strong>email</strong>:</label>
                 <textarea name="message" class="message form-control" id="message" cols="20" rows="10"
-                  class="form-control"></textarea>
+                  class="text-left">
+                  
+                  
+                  
+                  
+                  </textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
                 <input type="submit" class="btn btn-primary" value="Send">
@@ -178,5 +184,5 @@
   </div>
 </div>
 
-
+<script src="/javascripts/emailcompiler.js"></script>
 <script src="/javascripts/static-location.js"></script>
