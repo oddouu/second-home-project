@@ -1,5 +1,5 @@
 let pickUpDateInput = $('#pickup-date')
-let message = $('#message')
+let message = document.querySelector('#message')
 
 $(document).ready(function () {
   $('#message').summernote({
@@ -30,6 +30,7 @@ $(pickUpDateInput).change(function () {
   let sendToName = sendToField[0].attributes.sendTo.value;
   console.log(sendToName);
   console.log(pickUpDate);
-  $('#message').text(`Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.`);
+  message.innerHTML = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.`;
+  console.log(message.innerHTML)
 
 });
