@@ -77,6 +77,39 @@ router.get("/listings/:listingId", (req, res) => {
             if (retrievedListing.author._id == currentUser) {
                 isCreator = true;
             }
+
+            // calculate how many days ago the listing was created
+            const today = new Date();
+            const createdOn = new Date(retrievedListing.created_at);
+
+
+            // takes time difference from listing's created_at and shows it in different time measures depending on how much time has passed (minutes, hours or days)
+            const msInMinute = 60 * 1000;
+            const msInHour = 60 * 60 * 1000;
+            const msInDay = 24 * 60 * 60 * 1000;
+
+            let diffInMs = (today - createdOn);
+            let diff;
+            let postedAgo;
+            
+            if (diff <= msInMinute ) {
+                postedAgo = 'Now';
+            } else if (diff <= msInHour) {
+                diffInMs /= msInMinute;
+                diff = Math.round(diffInMs);
+                postedAgo = `${diff} minute(s) ago`;
+            } else if (diff <= msInDay) {
+                diffInMs /= msInHour;
+                diff = Math.round(diffInMs);
+                postedAgo = `${diff} hour(s) ago`;
+            } else {
+                diffInMs /= msInDay;
+                diff = Math.round(diffInMs);
+                postedAgo = `${diff} day(s) ago`;
+            }
+        
+
+            // checks if the current user already wants this listing, and depending on that does something on the 'description' view
             if (currentUser) {
                 User.findById(currentUser)
                     .then((userIFound) => {
@@ -91,7 +124,8 @@ router.get("/listings/:listingId", (req, res) => {
                             currentUser: currentUser,
                             // GET WANTED COUNT
                             wantedCount: retrievedListing.wantedBy.length,
-                            IsWantedByCurrentUser
+                            IsWantedByCurrentUser,
+                            postedAgo
                         });
                         return;
                     });

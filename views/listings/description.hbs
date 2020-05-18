@@ -3,29 +3,40 @@
     <a href="/listings"> Go back</a>
   </p>
 
-  {{#if isCreator}}
-  <span class="my-2 py-2 mr-2 pr-2 d-flex flex-row">
-    <form action="/listings/{{listing._id}}/edit-picture" method="POST" enctype="multipart/form-data"
-      class="form-signin d-flex flex-row">
-      <input type="file" id="file-input" class="form-control-file" name="image" placeholder="Change Picture">
-      <input type="submit" class="btn btn-sm btn-outline-secondary" value="submit">
-    </form>
-  </span>
-  {{/if}}
+
 </div>
 
 <div class="container-fluid">
   <div class=" row">
     <div class="col-12 col-lg-7">
       <div class="card">
+        {{#if isCreator}}
+          <span class="my-2 py-2 mr-2 pr-2 d-flex justify-content-center" >
+            <form action="/listings/{{listing._id}}/edit-picture" method="POST" enctype="multipart/form-data"
+              class="input-group w-75 h-75">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" name="image" id="change-image-input">
+                <label class="custom-file-label" for="change-image-input"> <span><i
+                      class="fas fa-pencil-alt"></i></span>
+                  Upload new image</label>
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" id="upload-new-image">Submit</button>
+              </div>
+            </form>
+          </span>
+
+        {{/if}}
         <div id="carouselControls" class="carousel slide my-1 py-1" data-ride="carousel">
           <div class="carousel-inner">
+
+
             {{#each listing.imgPath}}
             <div class="carousel-item active">
               <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="w-100 d-block img-fluid"
-                  alt="{{listing.name}}"  style="display: block;
+                  alt="{{listing.name}}" style="display: block;
               margin-left: auto;
-              margin-right: auto;"></a>
+              margin-right: auto;" id="listing-image"></a>
             </div>
             {{/each}}
           </div>
@@ -48,7 +59,7 @@
 
           <div class="d-flex flex-row justify-content-between pl-2 mr-4 ml-2 pr-4">
             <div class="">
-              <p class="figure-caption text-rigth">{{listing.listingType}}</p>
+              <p class="text-info text-rigth">{{listing.listingType}}</p>
               <h5 class="card-title">{{listing.name}} </h5>
 
             </div>
@@ -96,20 +107,29 @@
 
 
 
-              <p class="card-text pt-2">Wanted by {{wantedCount}} users</p>
+              <p class="card-text pt-2 text-secondary">Wanted by {{wantedCount}} users</p>
             </div>
           </div>
 
           <div>
+            <p class="card-text text-secondary pl-2 mr-4 ml-2 pr-4">
+              <span>Posted {{postedAgo}}</span>
+            </p>
+          </div>
 
+          <div>
             <hr>
             <p class="card-text pl-2 mr-4 ml-2 pr-4">
-            <p><strong>Description</strong></p>{{listing.description}}</p>
+            <p><strong class="text-info">Description</strong></p>
+            {{listing.description}}
+            </p>
           </div>
+
+
           <div>
 
             <hr>
-            <p><strong>Location</strong></p>
+            <p><strong class="text-info">Location</strong></p>
             <p class="card-text">{{listing.location}}</p>
             <div id="static-location" lat={{listing.lat}} lng={{listing.lng}} class="d-none"></div>
             <div id="map-container" class="py-3 my-3"></div>
@@ -129,7 +149,7 @@
               style="border-radius: 50%; width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto"
               src="{{listing.author.imgPath}}" alt="">
           </div>
-          <h5 class="card-title">Posted by: {{listing.author.username}} </h5>
+          <h5 class="card-title"> <span class="text-info">Posted by: </span>{{listing.author.username}} </h5>
 
 
           {{#unless currentUser}}
@@ -145,7 +165,8 @@
           <div class="pt-5 mt-5">
             <hr>
             <p class="card-text pt-4 mt-4">If you're interested, why don't you send an email to
-              <span id="send-to" sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
+              <span id="send-to"
+                sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
 
             <form action="/send-email/{{listing.author._id}}" method="POST" class="form-signin ">
 
@@ -163,10 +184,10 @@
                   Write here your <strong>email</strong>:</label>
                 <textarea name="message" class="message form-control" id="message" cols="20" rows="10"
                   class="text-left">
-                  
-                  
-                  
-                  
+
+
+
+
                   </textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">

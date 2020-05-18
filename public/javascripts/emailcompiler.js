@@ -9,6 +9,7 @@ $(document).ready(function () {
       ['color', ['color']],
       ['para', ['ul', 'ol', 'paragraph']]
     ],
+    
     placeholder: '',
     height: 250,
     minHeight: 100,
@@ -26,11 +27,13 @@ $(pickUpDateInput).change(function () {
 
   console.log(listingNameField)
 
-  let listingName = listingNameField[0].attributes.listing.value;
-  let sendToName = sendToField[0].attributes.sendTo.value;
+  let listingName = listingNameField[0].attributes.listing.value; //listingname => aaa
+  let sendToName = sendToField[0].attributes.sendTo.value; //authormname => stefano
+
+
   console.log(sendToName);
   console.log(pickUpDate);
-  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.`;
+  HTMLstring = `<b>Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.</b>`;
   
 
   $('#message').summernote('pasteHTML', HTMLstring);

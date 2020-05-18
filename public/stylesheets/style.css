@@ -273,4 +273,7 @@ a {
 #map-container {
   height: 250px; }
 
+#upload-new-image {
+  line-height: 0; }
+
 /*# sourceMappingURL=style.css.map */
