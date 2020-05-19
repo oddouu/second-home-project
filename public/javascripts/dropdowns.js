@@ -47,8 +47,6 @@ $(firstDropdown).change(function () {
             .attr('value', entry.L2)
             .text(entry.L2));
       }
-
     });
   });
-
 });

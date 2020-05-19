@@ -122,13 +122,13 @@ router.get("/listings/:listingId", (req, res) => {
             let diff;
             let postedAgo;
 
-            if (diff <= msInMinute) {
+            if (diffInMs >= 0 && diffInMs <= msInMinute) {
                 postedAgo = 'Now';
-            } else if (diff <= msInHour) {
+            } else if (diffInMs <= msInHour) {
                 diffInMs /= msInMinute;
                 diff = Math.round(diffInMs);
                 postedAgo = `${diff} minute(s) ago`;
-            } else if (diff <= msInDay) {
+            } else if (diffInMs <= msInDay) {
                 diffInMs /= msInHour;
                 diff = Math.round(diffInMs);
                 postedAgo = `${diff} hour(s) ago`;
@@ -169,6 +169,8 @@ router.get("/listings/:listingId", (req, res) => {
 // POST add new listing
 router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
 
+    const today = new Date();
+    let pickupDate;
     let author;
 
     const {
@@ -201,10 +203,18 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
         imgName = 'default';
     }
 
+    if (req.body.pickupDate) {
+        pickupDate = new Date(req.body.pickupDate);
+    } else {
+        pickupDate = 'none';
+    }
+
+
     const newListing = new Listing({
         name,
         description,
         listingType,
+        pickupDate,
         author,
         imgPath,
         imgName,
@@ -215,26 +225,36 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
         subCategory
     });
 
+    console.log('========');
+    console.log("PICKUPDATE: ", pickupDate);
+    if (pickupDate)
+        if (pickupDate >= today) {
+            console.log('it is in the future!');
+            Listing.create(newListing)
+                .then((createdListing) => {
 
-    Listing.create(newListing)
-        .then((createdListing) => {
-
-            User.update({
-                    _id: author
-                }, {
-                    $push: {
-                        createdListings: createdListing._id
-                    }
+                    User.update({
+                            _id: author
+                        }, {
+                            $push: {
+                                createdListings: createdListing._id
+                            }
+                        })
+                        .then(() => {
+                            // once the item has been created, redirects the user to the item description page. How do I pass a success message in this case?
+                            res.redirect(`/listings/${createdListing._id}`);
+                        });
                 })
-                .then(() => {
-                    // once the item has been created, redirects the user to the item description page. How do I pass a success message in this case?
-                    res.redirect(`/listings/${createdListing._id}`);
+                .catch((err) => {
+                    console.log(err);
+                    res.redirect('/listings/add');
                 });
-        })
-        .catch((err) => {
-            console.log(err);
+        } else {
+            console.log('it is in the past');
             res.redirect('/listings/add');
-        });
+        }
+    console.log('========');
+
 
 });
 

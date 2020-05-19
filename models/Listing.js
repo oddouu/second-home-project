@@ -52,6 +52,10 @@ const listingSchema = new Schema({
 
         lng: {
             type: String,
+        },
+
+        pickupDate: {
+            type: Date,
         }
     
    }, {

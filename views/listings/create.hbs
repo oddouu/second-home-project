@@ -1,5 +1,3 @@
-
-
 <form action="/listings/add" method="POST" enctype="multipart/form-data" class="form-signin">
   <div class="text-center mb-4">
     <img class="mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
@@ -15,10 +13,28 @@
 
   <div class="form-label-group">
     <select name="listingType" class="custom-select d-block w-100 form-control" id="listing-type" required>
+      <option selected="true" disabled>Choose Type</option>
       <option>Offer</option>
       <option>Want</option>
     </select>
   </div>
+
+  <div class="checkbox input-group d-none" id="offerTrigger">
+    <label>
+      <input type="checkbox" class="p-1 m-1"> I know already when people can come to pick-up this item.
+    </label>
+  </div>
+
+  <div class="input-group d-flex flex-column justify-content-center">
+    <div id="pickupTrigger" class="d-none my-2 py-2">
+    <label for="pickup-date">
+      <span class="mr-2"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+      Insert your ideal pick-up date:
+      </label>
+    <input type="date" id="pickup-date" name="pickupDate" class="form-control">
+    </div>
+  </div>
+
 
   <div class="form-label-group">
     <select name="category" class="custom-select d-block w-100 form-control" id="category">
@@ -40,18 +56,14 @@
 
     <input name="lat" type="text" id="input-lat" class="d-none">
     <input name="lng" type="text" id="input-lng" class="d-none">
-    
+
     <input name="location" type="search" id="input-map" class="form-control" placeholder="Location" />
-      {{!-- <label for="input-map">Location</label> --}}
-
-
+    {{!-- <label for="input-map">Location</label> --}}
   </div>
 
-
-
   <div class="form-label-group">
-    <input type="file" id="file-input" class="form-control-file" name="image" placeholder="Image">
-    <label for="file-input">Upload images</label>
+    <label class="custom-file-label" for="image-input">Upload image</label>
+    <input type="file" class="form-control-file" name="image" id="image-input">
   </div>
 
   <div class="mb-3">
@@ -61,10 +73,10 @@
     </label>
   </div>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit" {{> error this}} {{> success this}}>Submit!</button>
-
+  <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit" {{> error this}} {{> success this}}>Submit!</button>
+  <div id="error" class="d-none"><p class="text-danger">Please select a date in the future</p></div>
 </form>
 
-
+<script src="/javascripts/schedule-date.js"></script>
 <script src="/javascripts/dropdowns.js"></script>
-  <script src="/javascripts/autocomplete.js"></script>
+<script src="/javascripts/autocomplete.js"></script>

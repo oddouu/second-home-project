@@ -27,10 +27,20 @@ const uploadCloud = require('../config/cloudinary.js');
 
 // GET ROUTES
 router.get("/signup", (req, res, next) => {
+
+    // automatically logs out if already logged in - user shouldn't be able to find the signup url on the UI
+    if (req.session.currentUser) {
+        req.session.destroy(() => {});
+    }
     res.render("auth/signup");
 });
 
 router.get("/login", (req, res, next) => {
+
+    // automatically logs out if already logged in - user shouldn't be able to find the login url on the UI
+    if (req.session.currentUser) {
+        req.session.destroy(() => {});
+    }
     res.render("auth/login");
 });
 
@@ -42,7 +52,7 @@ router.get("/login", (req, res, next) => {
 //       next(e);
 //     }
 //   });
-  
+
 //   router.get("/login", (req, res, next) => {
 //     try {
 //       res.render("auth/login");
@@ -50,7 +60,7 @@ router.get("/login", (req, res, next) => {
 //       next(e);
 //     }
 //   });
-  
+
 router.get("/logout", (req, res, next) => {
     /* req.logout(); */
     req.session.destroy(() => {
@@ -64,12 +74,12 @@ router.post("/signup", uploadCloud.single('image'), (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
-    const location = req.body.location;
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashPass = bcrypt.hashSync(password, salt);
 
     let imgPath;
     let imgName;
+
 
     if (req.file) {
         imgPath = req.file.url;
@@ -103,11 +113,13 @@ router.post("/signup", uploadCloud.single('image'), (req, res, next) => {
                     username,
                     password: hashPass,
                     email: email,
-                    location: location,
                     imgPath: imgPath,
                     imgName: imgName
                 })
-                .then(() => {
+                .then((createdUser) => {
+
+                    // login automatically after signup
+                    req.session.currentUser = createdUser;
                     res.redirect("/");
                 })
                 .catch((error) => {
