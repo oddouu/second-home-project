@@ -1,20 +1,41 @@
 <section class="jumbotron text-center">
     <div class="container">
+
+        {{#unless queryCategory}}
+        {{#unless queryType}}
         <h1>All Listings</h1>
-        <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator,
-            etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
+        <p class="lead text-muted">A clean list of all the listings we currently have online. No filters. Just all of them at once.</p>
+        {{/unless}}
+        {{/unless}}
+
+        {{#if queryCategory}}
+        <h1>{{queryCategory}}</h1>
+        <p class="lead text-muted">{{queryCategory}} it's a very interesting category. What do we have in there?</p>
+        {{/if}}
+        {{#if queryType}}
+        <h1>{{queryType}}</h1>
+        {{#if wantMessage}}
+        <p class="lead text-muted">{{wantMessage}}</p>
+        {{/if}}
+        {{#if offerMessage}}
+        <p class="lead text-muted">{{offerMessage}}</p>
+        {{/if}}
+        {{/if}}
+
+
+
         <p>
             <a href="/listings/add" class="btn btn-primary my-2">Add a new listing here!</a>
-            <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+            <a href="/" class="btn btn-secondary my-2">Back to the homepage</a>
         </p>
     </div>
 </section>
-
 
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">
 
+            {{#unless emptyMessage}}
             {{#each listings}}
 
 
@@ -47,6 +68,14 @@
             </div>
 
             {{/each}}
+            {{/unless}}
+            {{#if emptyMessage}}
+
+            <div class="col-12 text-center">
+                {{emptyMessage}}
+            </div>
+
+            {{/if}}
 
         </div>
     </div>

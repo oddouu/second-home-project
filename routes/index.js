@@ -1,22 +1,34 @@
 const express = require('express');
 const router = express.Router();
 
+const User = require("../models/User");
+const Listing = require('../models/Listing.js');
+
 
 router.get("/", (req, res, next) => {
-  let currentUser; 
-  
+  let currentUser;
+
+ 
   if (req.session.currentUser) {
     currentUser = req.session.currentUser;
   }
 
-   // Getting username from passport
-  //  if (req.session.passport) {
-  //   currentUser = req.session.passport.user.username;
-  // }
+  Listing.find()
+         .then((ListingsArray)=>{
+          
+          // extracts available categories from listings in the Db
+          const uniqueCategories = [...new Set(ListingsArray.map(data => data.category))];
+           
+          // passes categories to index view
+           res.render("index", {
+             currentUser,
+             uniqueCategories : uniqueCategories
+           });
+         })
+         .catch(err=>console.log(err));
 
-  res.render("index", {
-    currentUser,
-  });
+  
+
 });
 
 // router.use => middleware

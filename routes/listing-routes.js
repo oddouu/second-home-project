@@ -17,33 +17,61 @@ router.get("/listings/add", (req, res) => {
 });
 
 
-// GET request to get all listings
+// GET request to get all listings (or listings filtered by category)
 router.get('/listings', (req, res) => {
+    let emptyMessage;
+    let queryCategory = req.query.category;
+    let queryType = req.query.listingType;
+    let wantMessage;
+    let offerMessage;
     let currentUser;
 
     if (req.session.currentUser) {
         currentUser = req.session.currentUser._id;
     }
 
+    if (queryType === 'Want') {
+        wantMessage = 'Feeling like making someone happy today? Have a look at what people is looking for.';
+    } else if (queryType === 'Offer') {
+        offerMessage = 'Satisfy your urge for free stuff. Check what people is giving away!';
+    }
 
     Listing.find()
         .populate('author')
         .then(allListings => {
 
-            // console.log('all listings',allListings);
+            //filters the array of objects based on the query in the url
+            if (queryCategory) {
+                allListings = allListings.filter(listing => listing.category === queryCategory);
+            }
 
+            if (queryType) {
+                allListings = allListings.filter(listing => listing.listingType === queryType);
+            }
+
+            //checks if the current user is the listing's author. 
+            //if it is, creates (and sets to true) the isAuthor property - which will be used on the view to conditionally render things
             allListings.forEach((listing) => {
                 if (listing.author._id == currentUser) {
                     listing.isAuthor = true;
                 }
             });
 
+            if (allListings === undefined || allListings.length == 0) {
+                emptyMessage = 'Wow, such empty.';
+            }
+
             res.render('listings/all-listings', {
                 listings: allListings,
-                currentUser
+                currentUser,
+                queryCategory,
+                queryType,
+                emptyMessage,
+                wantMessage,
+                offerMessage
             });
-        });
-    // add catch?
+        })
+        .catch(err => console.log(err));
 });
 
 // GET form to edit existing listing
@@ -69,6 +97,8 @@ router.get("/listings/:listingId", (req, res) => {
 
     if (req.session.currentUser) {
         currentUser = req.session.currentUser._id;
+    } else {
+        res.redirect('/login');
     }
 
     Listing.findById(listingId)
@@ -91,8 +121,8 @@ router.get("/listings/:listingId", (req, res) => {
             let diffInMs = (today - createdOn);
             let diff;
             let postedAgo;
-            
-            if (diff <= msInMinute ) {
+
+            if (diff <= msInMinute) {
                 postedAgo = 'Now';
             } else if (diff <= msInHour) {
                 diffInMs /= msInMinute;
@@ -107,7 +137,7 @@ router.get("/listings/:listingId", (req, res) => {
                 diff = Math.round(diffInMs);
                 postedAgo = `${diff} day(s) ago`;
             }
-        
+
 
             // checks if the current user already wants this listing, and depending on that does something on the 'description' view
             if (currentUser) {
@@ -128,14 +158,19 @@ router.get("/listings/:listingId", (req, res) => {
                             postedAgo
                         });
                         return;
-                    });
+                    })
+                    .catch(err => console.log(err));
             }
-        });
+        })
+        .catch(err => console.log(err));
 });
 
 
 // POST add new listing
 router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
+
+    let author;
+
     const {
         name,
         description,
@@ -147,21 +182,24 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
         subCategory
     } = req.body;
 
+    if (req.session.currentUser) {
+        author = req.session.currentUser._id;
 
-    const author = req.session.currentUser._id;
+    }
+
     // console.log(author);
 
     let imgPath;
     let imgName;
 
-     if (req.file) {
-         imgPath = req.file.url;
-         imgName = req.file.originalname;
+    if (req.file) {
+        imgPath = req.file.url;
+        imgName = req.file.originalname;
 
-     } else {
-         imgPath = '/images/corgiswimflip.gif';
-         imgName = 'default';
-     }
+    } else {
+        imgPath = '/images/corgiswimflip.gif';
+        imgName = 'default';
+    }
 
     const newListing = new Listing({
         name,
