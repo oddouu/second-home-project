@@ -241,18 +241,6 @@ router.post('/listings/:listingId/given-away', (req, res, next) => {
         res.redirect('/');
     }
 
-
-    // if the item is given away, we need to:
-    // set as true the listing's givenAway property
-    // pull the listing id from the user's listingsToGive property, if present
-    // redirect to listing description page
-
-    // if the item is no longer given away (e.g. the button is pressed once again), we need to:
-    // set as false the listing's givenAway property
-    // check if other users still want the listing
-    // push back the listing id to the user's listingsToGive property, if it was present
-    // redirect to listing description page
-
     Listing.findById(listingId)
         .populate('author')
         .then(currentListing => {

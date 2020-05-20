@@ -2,8 +2,6 @@
   <p class="my-2 py-2 ml-2 pl-2">
     <a href="/listings"> Go back</a>
   </p>
-  {{listing.pickupDate}}
-
 </div>
 
 <div class="container-fluid">
@@ -51,8 +49,7 @@
           </a>
         </div>
 
-        <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="card-img-top" alt="{{listing.name}}" 
-             style="display: block;
+        <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="card-img-top" alt="{{listing.name}}" style="display: block;
                     margin-left: auto;
                     margin-right: auto;
                     width: 50%;
@@ -195,9 +192,11 @@
           {{#unless isCreator}}
           {{#if currentUser}}
 
+          {{#unless listing.pickupDate}}
           <div class="pt-5 mt-5">
             <hr>
-            <p class="card-text pt-4 mt-4">If you're interested, why don't you send an email to
+            <p class="card-text pt-4 mt-4">It looks like the author didn't schedule a pickup date yet. Why don't you
+              propose one and send an email to
               <span id="send-to"
                 sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
 
@@ -230,6 +229,42 @@
             </form>
 
           </div>
+
+          {{/unless}}
+
+          {{#if listing.pickupDate}}
+
+          <div class="pt-5 mt-5">
+            <hr>
+            <p class="card-text pt-4 mt-4">It looks like the author schedule a pickup date for the
+              {{listing.pickupDate}}. Why don't you send an email to
+              <span id="send-to"
+                sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
+
+            <form action="/send-email/{{listing.author._id}}" method="POST" class="form-signin ">
+              <input type="date" id="default-date" value={{listing.pickupDate}} name="pickup-date" class="d-none">
+              <input type="text" id="listing-name" listing="{{listing.name}}" class="d-none">
+              <div class="input-group d-flex flex-column justify-content-center py-2 my-2 text-left">
+                <label for="message" class="text-left">
+                  <span class="text-success mr-2"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                  Write here your <strong>email</strong>:</label>
+                <textarea name="message" class="message form-control" id="message" cols="20" rows="10"
+                  class="text-left">
+
+
+
+
+                            </textarea>
+              </div>
+              <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
+                <input type="submit" class="btn btn-primary" value="Send">
+              </div>
+            </form>
+
+          </div>
+
+
+          {{/if}}
           {{/if}}
           {{/unless}}
         </div>

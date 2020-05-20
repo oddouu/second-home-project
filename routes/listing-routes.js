@@ -96,7 +96,7 @@ router.get("/listings/:listingId", (req, res) => {
     let IsWantedByCurrentUser;
 
     if (req.session.currentUser) {
-        currentUser = req.session.currentUser._id;
+        currentUser = req.session.currentUser;
     } else {
         res.redirect('/login');
     }
@@ -104,7 +104,7 @@ router.get("/listings/:listingId", (req, res) => {
     Listing.findById(listingId)
         .populate("author")
         .then((retrievedListing) => {
-            if (retrievedListing.author._id == currentUser) {
+            if (retrievedListing.author._id == currentUser._id) {
                 isCreator = true;
             }
 
@@ -141,7 +141,7 @@ router.get("/listings/:listingId", (req, res) => {
 
             // checks if the current user already wants this listing, and depending on that does something on the 'description' view
             if (currentUser) {
-                User.findById(currentUser)
+                User.findById(currentUser._id)
                     .then((userIFound) => {
 
                         if (userIFound.likedListings.includes(listingId)) {

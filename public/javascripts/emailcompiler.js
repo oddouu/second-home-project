@@ -1,5 +1,5 @@
-let pickUpDateInput = $('#pickup-date')
-let message = document.querySelector('#message')
+let pickUpDateInput = $('#pickup-date');
+let message = document.querySelector('#message');
 
 $(document).ready(function () {
   $('#message').summernote({
@@ -9,7 +9,7 @@ $(document).ready(function () {
       ['color', ['color']],
       ['para', ['ul', 'ol', 'paragraph']]
     ],
-    
+
     placeholder: '',
     height: 250,
     minHeight: 100,
@@ -17,6 +17,19 @@ $(document).ready(function () {
   });
 
   $('.notifications').summernote();
+
+  let sendToField = $('#send-to');
+  let listingNameField = $('#listing-name');
+  let defaultDate = $('#default-date').val();
+  let listingName = listingNameField[0].attributes.listing.value; //listingname => aaa
+  let sendToName = sendToField[0].attributes.sendTo.value; //authormname => stefano
+  
+
+
+  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the date you mentioned.`;
+
+
+  $('#message').summernote('pasteHTML', HTMLstring);
 });
 
 
@@ -34,7 +47,7 @@ $(pickUpDateInput).change(function () {
   console.log(sendToName);
   console.log(pickUpDate);
   HTMLstring = `<b>Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.</b>`;
-  
+
 
   $('#message').summernote('pasteHTML', HTMLstring);
 
