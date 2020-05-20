@@ -11,10 +11,16 @@ const path = require('path');
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
+hbs.registerHelper("date", require("helper-date"));
+
 /* const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const passport      = require('passport');
 const User          = require("./models/user"); */
 
+// hbs.registerHelper('formatTime', function (date, format) {
+// var mmnt = moment(date);
+// return mmnt.format(format);
+// });
 
 mongoose
   .connect(process.env.MONGODB_URI, {

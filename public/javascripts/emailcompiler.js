@@ -1,4 +1,4 @@
-let pickUpDateInput = $('#pickup-date');
+
 let message = document.querySelector('#message');
 
 $(document).ready(function () {
@@ -20,20 +20,24 @@ $(document).ready(function () {
 
   let sendToField = $('#send-to');
   let listingNameField = $('#listing-name');
-  let defaultDate = $('#default-date').val();
+  let pickUpDate;
+
+  if ($('#pickupDateDefault')) {
+     pickUpDate = $('#pickupDateDefault').attr('pickupDate');
+     console.log(pickUpDate);
+  }
+
   let listingName = listingNameField[0].attributes.listing.value; //listingname => aaa
   let sendToName = sendToField[0].attributes.sendTo.value; //authormname => stefano
   
-
-
-  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the date you mentioned.`;
-
+  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}`;
 
   $('#message').summernote('pasteHTML', HTMLstring);
 });
 
 
 $(pickUpDateInput).change(function () {
+  let pickUpDateInput = $('#pickup-date');
   let pickUpDate = pickUpDateInput[0].value;
   let sendToField = $('#send-to');
   let listingNameField = $('#listing-name');
@@ -46,7 +50,7 @@ $(pickUpDateInput).change(function () {
 
   console.log(sendToName);
   console.log(pickUpDate);
-  HTMLstring = `<b>Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.</b>`;
+  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}.`;
 
 
   $('#message').summernote('pasteHTML', HTMLstring);

@@ -236,10 +236,13 @@
 
           <div class="pt-5 mt-5">
             <hr>
-            <p class="card-text pt-4 mt-4">It looks like the author schedule a pickup date for the
-              {{listing.pickupDate}}. Why don't you send an email to
-              <span id="send-to"
-                sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
+            <p class="card-text pt-4 mt-4">It looks like the author scheduled a pickup date for the
+
+             <span id="pickupDateDefault" pickupDate="{{date listing.pickupDate "DD-MM-YYYY"}}"> {{date listing.pickupDate "DD-MM-YYYY"}} </span>
+
+              . Why don't you send an email to
+
+              <span id="send-to" sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
 
             <form action="/send-email/{{listing.author._id}}" method="POST" class="form-signin ">
               <input type="date" id="default-date" value={{listing.pickupDate}} name="pickup-date" class="d-none">
@@ -249,12 +252,7 @@
                   <span class="text-success mr-2"><i class="fa fa-envelope" aria-hidden="true"></i></span>
                   Write here your <strong>email</strong>:</label>
                 <textarea name="message" class="message form-control" id="message" cols="20" rows="10"
-                  class="text-left">
-
-
-
-
-                            </textarea>
+                  class="text-left"></textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
                 <input type="submit" class="btn btn-primary" value="Send">

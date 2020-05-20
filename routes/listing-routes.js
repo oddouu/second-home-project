@@ -6,6 +6,7 @@ const Listing = require('../models/Listing.js');
 const User = require("../models/User");
 
 
+
 // GET request to create new listing form
 router.get("/listings/add", (req, res) => {
     const currentUser = req.session.currentUser;
