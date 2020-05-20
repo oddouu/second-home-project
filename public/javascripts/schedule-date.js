@@ -24,10 +24,10 @@ $('input:checkbox').change(function () {
     console.log($('#pickup-date').val(''));
   } else {
     console.log('checkbox not ticked');
-    $(pickupSelect).addClass('d-none');
-    $('#pickup-date').attr("required", "false");
-    $('#pickup-date').val('');
-    console.log($('#pickup-date').val(''));
+    // $(pickupSelect).addClass('d-none');
+    $('#pickup-date').removeAttr('required');
+    $('#pickup-date').val(null);
+    console.log($('#pickup-date').value);
 
   }
 });

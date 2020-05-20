@@ -2,7 +2,7 @@
   <p class="my-2 py-2 ml-2 pl-2">
     <a href="/listings"> Go back</a>
   </p>
-{{listing.pickupDate}}
+  {{listing.pickupDate}}
 
 </div>
 
@@ -11,28 +11,29 @@
     <div class="col-12 col-lg-7">
       <div class="card">
         {{#if isCreator}}
-          <span class="my-2 py-2 mr-2 pr-2 d-flex justify-content-center" >
-            <form action="/listings/{{listing._id}}/edit-picture" method="POST" enctype="multipart/form-data"
-              class="input-group w-75 h-75">
-              <div class="custom-file">
-                <input type="file" class="custom-file-input" name="image" id="change-image-input">
-                <label class="custom-file-label" for="change-image-input"> <span><i
-                      class="fas fa-pencil-alt"></i></span>
-                  Upload new image</label>
-              </div>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit" id="upload-new-image">Submit</button>
-              </div>
-            </form>
-          </span>
+        <span class="my-2 py-2 mr-2 pr-2 d-flex justify-content-center">
+          <form action="/listings/{{listing._id}}/edit-picture" method="POST" enctype="multipart/form-data"
+            class="input-group w-75 h-75">
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" name="image" id="change-image-input">
+              <label class="custom-file-label" for="change-image-input"> <span><i class="fas fa-pencil-alt"></i></span>
+                Upload new image</label>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="submit" id="upload-new-image">Submit</button>
+            </div>
+          </form>
+        </span>
 
         {{/if}}
+
         <div id="carouselControls" class="carousel slide my-1 py-1" data-ride="carousel">
           <div class="carousel-inner">
 
-
             {{#each listing.imgPath}}
             <div class="carousel-item active">
+
+
               <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="w-100 d-block img-fluid"
                   alt="{{listing.name}}" style="display: block;
               margin-left: auto;
@@ -50,17 +51,31 @@
           </a>
         </div>
 
-        <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="card-img-top" alt="{{listing.name}}" style="display: block;
-                  margin-left: auto;
+        <a href="{{listing.imgPath}}"><img src="{{listing.imgPath}}" class="card-img-top" alt="{{listing.name}}" 
+             style="display: block;
+                    margin-left: auto;
                     margin-right: auto;
-                    width: 50%;">
+                    width: 50%;
+                    {{#if listing.givenAway}}
+                    filter: grayscale(100%);
+                    {{/if}}
+                    ">
         </a>
         <div class="card-body d-flex flex-column">
 
           <div class="d-flex flex-row justify-content-between pl-2 mr-4 ml-2 pr-4">
             <div class="">
-              <p class="text-info text-rigth">{{listing.listingType}}</p>
-              <h5 class="card-title">{{listing.name}} </h5>
+              <p class="text-info text-rigth">{{listing.listingType}}
+
+                {{#if listing.givenAway}}
+                <span class="text-danger ml-2">This item has already been given away</span>
+                {{/if}}
+
+              </p>
+
+              <h5 class="card-title" {{#if listing.givenAway}} style="text-decoration: line-through;" {{/if}}>
+                {{listing.name}} </h5>
+
 
             </div>
 
@@ -78,14 +93,32 @@
 
               {{#if isCreator}}
 
-              <div class="btn-group">
+              <div class="d-flex flex-column">
+                <div class="btn-group flex-row">
+                  <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
 
-                <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
+                  <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
+                  </form>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <form action="/listings/{{listing._id}}/given-away" class="" method="POST">
+                    <button type="submit"
+                      class="px-3 btn btn-sm btn-outline-success {{#if listing.givenAway}}active px-4{{/if}}">
+                      {{#unless listing.givenAway}}
+                      GIVEN AWAY
+                      {{/unless}}
+                      {{#if listing.givenAway}}
+                      GIVE AWAY
+                      {{/if}}
 
-                <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
-                  <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
-                </form>
+                    </button>
+                  </form>
+
+                </div>
               </div>
+
+
 
               {{else}}
               <div>
@@ -172,7 +205,7 @@
 
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
                 <label for="pickup-date" class="text-left">
-                 
+
                   <span class="text-success mr-2"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                   Schedule a pick-up <strong>date</strong>:</label>
                 <input type="date" id="pickup-date" name="pickup-date" class="form-control" required>

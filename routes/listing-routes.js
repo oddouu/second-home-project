@@ -172,6 +172,7 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
     const today = new Date();
     let pickupDate;
     let author;
+    const givenAway = false;
 
     const {
         name,
@@ -206,7 +207,7 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
     if (req.body.pickupDate) {
         pickupDate = new Date(req.body.pickupDate);
     } else {
-        pickupDate = 'none';
+        pickupDate = null;
     }
 
 
@@ -222,13 +223,13 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
         lat,
         lng,
         category,
-        subCategory
+        subCategory,
+        givenAway
     });
 
     console.log('========');
     console.log("PICKUPDATE: ", pickupDate);
-    if (pickupDate)
-        if (pickupDate >= today) {
+        if (pickupDate >= today || !pickupDate) {
             console.log('it is in the future!');
             Listing.create(newListing)
                 .then((createdListing) => {
@@ -249,11 +250,12 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
                     console.log(err);
                     res.redirect('/listings/add');
                 });
-        } else {
+        } else if (pickupDate <= today) {
             console.log('it is in the past');
             res.redirect('/listings/add');
         }
-    console.log('========');
+        console.log('========');
+    
 
 
 });
@@ -367,7 +369,7 @@ router.post('/listings/:listingId/edit', (req, res) => {
 
 });
 
-
+// POST request to change picture
 router.post('/listings/:listingId/edit-picture', uploadCloud.single('image'), (req, res) => {
     const author = req.session.currentUser._id;
     const listingId = req.params.listingId;
@@ -400,9 +402,8 @@ router.post('/listings/:listingId/edit-picture', uploadCloud.single('image'), (r
             }
         })
         .catch((err) => console.log(err));
-
-
 });
+
 
 
 

@@ -56,6 +56,10 @@ const listingSchema = new Schema({
 
         pickupDate: {
             type: Date,
+        },
+
+        givenAway: {
+            type: Boolean,
         }
     
    }, {

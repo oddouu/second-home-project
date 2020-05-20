@@ -44,12 +44,21 @@
                     <figure class="figure">
                         <img src="{{this.imgPath}}" class="card-img-top figure-img img-fluid rounded" style="width : 100%;
                         height: 15vw; 
-                        object-fit: cover;" alt="{{this.name}}">
+                        object-fit: cover;
+                        {{#if this.givenAway}}
+                         filter: grayscale(100%);
+                        {{/if}}" 
+                        alt="{{this.name}}">
                         <figcaption class="figure-caption text-right pr-3 mr-3 my-2">{{this.listingType}}</figcaption>
                     </figure>
 
                     <div class="card-body">
-                        <p class="card-text">{{this.name}}</p>
+                        <p class="card-text">{{this.name}}
+                            {{#if this.givenAway}}
+                            <span class="ml-2 text-secondary"><i> - Given away</i></span>
+                            {{/if}}
+                        </p> 
+                        
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <a href="/listings/{{this._id}}" class="btn btn-sm btn-outline-secondary">See more</a>

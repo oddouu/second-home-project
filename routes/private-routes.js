@@ -19,7 +19,7 @@ router.get('/my-posted-listings', (req, res, next) => {
             })
             .populate('createdListings')
             .then(selectedUser => {
-                
+
                 res.render('private/my-posted-listings', {
                     listings: selectedUser[0].createdListings,
                     currentUser
@@ -85,7 +85,6 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
 
     const listingId = req.params.listingId;
     let currentUser;
-    let isCreator;
 
     // If user is not logged in, shows an error message
     if (req.session.currentUser) {
@@ -111,11 +110,6 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
         .then(foundListing => {
             User.findById(currentUser)
                 .then((userIFound) => {
-
-                    // if the current user is the listing's author, triggers the isCreator variable
-                    if (foundListing.author._id == currentUser) {
-                        isCreator = true;
-                    }
 
                     // If already wanted the item, removes the element from the array of the user, from the array of the author and from the array of the listings and redirects to the listing description
                     if (userIFound.likedListings.includes(listingId)) {
@@ -194,8 +188,6 @@ router.post('/listings/:listingId/wanted', (req, res, next) => {
                     }
                 });
         });
-
-
 });
 
 router.post('/send-email/:receiverId', (req, res, next) => {
@@ -235,5 +227,88 @@ router.post('/send-email/:receiverId', (req, res, next) => {
             });
         });
 });
+
+// POST request to set item as given away
+router.post('/listings/:listingId/given-away', (req, res, next) => {
+
+    const listingId = req.params.listingId;
+    let currentUser;
+
+    // If user is not logged in, redirects to root
+    if (req.session.currentUser) {
+        currentUser = req.session.currentUser._id;
+    } else {
+        res.redirect('/');
+    }
+
+
+    // if the item is given away, we need to:
+    // set as true the listing's givenAway property
+    // pull the listing id from the user's listingsToGive property, if present
+    // redirect to listing description page
+
+    // if the item is no longer given away (e.g. the button is pressed once again), we need to:
+    // set as false the listing's givenAway property
+    // check if other users still want the listing
+    // push back the listing id to the user's listingsToGive property, if it was present
+    // redirect to listing description page
+
+    Listing.findById(listingId)
+        .populate('author')
+        .then(currentListing => {
+
+            // checks if currentuser is author. if it's not, rejects operation and redirects to listings
+            if (currentUser != currentListing.author._id) {
+                res.redirect('/listings');
+            }
+
+            // checks if the currentListing has already been given away. 
+            if (!currentListing.givenAway) {
+                // if it's not given away, we need to set as true the listing's givenAway property
+                Listing.findByIdAndUpdate(listingId, {
+                        givenAway: true
+                    })
+                    // and then pull the listing id from the user's listingsToGive property, if present
+                    .then(() => {
+                        User.findByIdAndUpdate(currentUser, {
+                            $pullAll: {
+                                listingsToGive: [listingId]
+                            }
+                        }).then(() => {
+                            //lastly, redirect the user to the listing description page
+                            res.redirect(`/listings/${listingId}`);
+                        }).catch(err => console.log(err));
+                    }).catch(err => console.log(err));
+            } else {
+                // if the listing has already been given away, we need to set as false the listing's givenAway property
+                Listing.findByIdAndUpdate(listingId, {
+                        givenAway: false
+                    })
+                    // then, check if other users are still wanting this listing
+                    .then(() => {
+                        User.find({
+                            likedListings: listingId
+                        }).then(foundUsers => {
+                            // if the array of users contains something, we'll push back the listing to the listingsToGive user's property
+                            if (foundUsers || foundUsers.length) {
+                                User.findByIdAndUpdate(currentUser, {
+                                    $push: {
+                                        listingsToGive: listingId
+                                    }
+                                }).then(() => {
+                                    //lastly, redirect the user to the listing description page
+                                    res.redirect(`/listings/${listingId}`);
+                                }).catch(err => console.log(err));
+                            } else {
+                                // if there were no users that previously wanted the item there won't be any need to push it back. We'll just redirect to listing description
+                                res.redirect(`/listings/${listingId}`);
+                            }
+                        }).catch(err => console.log(err));
+                    }).catch(err => console.log(err));
+            }
+        }).catch(err => console.log(err));
+});
+
+
 
 module.exports = router;
