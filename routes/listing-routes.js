@@ -26,6 +26,7 @@ router.get('/listings', (req, res) => {
     let wantMessage;
     let offerMessage;
     let currentUser;
+    let isContacted;
 
     if (req.session.currentUser) {
         currentUser = req.session.currentUser._id;
@@ -37,42 +38,64 @@ router.get('/listings', (req, res) => {
         offerMessage = 'Satisfy your urge for free stuff. Check what people is giving away!';
     }
 
-    Listing.find()
-        .populate('author')
-        .then(allListings => {
 
-            //filters the array of objects based on the query in the url
-            if (queryCategory) {
-                allListings = allListings.filter(listing => listing.category === queryCategory);
-            }
+    User.findById(currentUser)
+        .then((userLogged) => {
 
-            if (queryType) {
-                allListings = allListings.filter(listing => listing.listingType === queryType);
-            }
+            Listing.find()
+                .populate('author')
+                .then(allListings => {
 
-            //checks if the current user is the listing's author. 
-            //if it is, creates (and sets to true) the isAuthor property - which will be used on the view to conditionally render things
-            allListings.forEach((listing) => {
-                if (listing.author._id == currentUser) {
-                    listing.isAuthor = true;
-                }
-            });
+                    //filters the array of objects based on the query in the url
+                    if (queryCategory) {
+                        allListings = allListings.filter(listing => listing.category === queryCategory);
+                    }
 
-            if (allListings === undefined || allListings.length == 0) {
-                emptyMessage = 'Wow, such empty.';
-            }
+                    if (queryType) {
+                        allListings = allListings.filter(listing => listing.listingType === queryType);
+                    }
 
-            res.render('listings/all-listings', {
-                listings: allListings,
-                currentUser,
-                queryCategory,
-                queryType,
-                emptyMessage,
-                wantMessage,
-                offerMessage
-            });
-        })
-        .catch(err => console.log(err));
+
+
+                    //checks if the current user is the listing's author. 
+                    //if it is, creates (and sets to true) the isAuthor property - which will be used on the view to conditionally render things
+                    allListings.forEach((listing) => {
+                        if (listing.author._id == currentUser) {
+                            listing.isAuthor = true;
+                        }
+
+                        let contactedUsers = userLogged.contactedUsers;
+                        // for each listing, iterates through the current user contactedUsers array and checks if the currentuser already contacted the author
+
+                                                
+                        contactedUsers.forEach((userICouldHaveContacted) => {
+                            console.log('AN USER I COULD HAVE CONTACTED:',userICouldHaveContacted);
+                            console.log('THE AUTHOR ID:',listing.author._id);
+                            if (userICouldHaveContacted._id == listing.author._id) {
+                                
+                                listing.isContacted = true;
+                                console.log('==== LISTING: ', listing);
+                            }
+                        });
+
+                    });
+
+                    if (allListings === undefined || allListings.length == 0) {
+                        emptyMessage = 'Wow, such empty.';
+                    }
+
+                    res.render('listings/all-listings', {
+                        listings: allListings,
+                        currentUser,
+                        queryCategory,
+                        queryType,
+                        emptyMessage,
+                        wantMessage,
+                        offerMessage
+                    });
+
+                }).catch(err => console.log(err));
+        }).catch(err => console.log(err));
 });
 
 // GET form to edit existing listing
@@ -96,6 +119,8 @@ router.get("/listings/:listingId", (req, res) => {
     let isCreator;
     let IsWantedByCurrentUser;
 
+    let isContacted;
+
     if (req.session.currentUser) {
         currentUser = req.session.currentUser;
     } else {
@@ -105,6 +130,7 @@ router.get("/listings/:listingId", (req, res) => {
     Listing.findById(listingId)
         .populate("author")
         .then((retrievedListing) => {
+
             if (retrievedListing.author._id == currentUser._id) {
                 isCreator = true;
             }
@@ -149,6 +175,10 @@ router.get("/listings/:listingId", (req, res) => {
                             IsWantedByCurrentUser = true;
                         }
 
+                        if (userIFound.contactedUsers.includes(retrievedListing.author._id)) {
+                            isContacted = true;
+                        }
+
                         res.render("listings/description", {
                             listing: retrievedListing,
                             isCreator: isCreator,
@@ -156,7 +186,8 @@ router.get("/listings/:listingId", (req, res) => {
                             // GET WANTED COUNT
                             wantedCount: retrievedListing.wantedBy.length,
                             IsWantedByCurrentUser,
-                            postedAgo
+                            postedAgo,
+                            isContacted
                         });
                         return;
                     })
@@ -174,6 +205,23 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
     let pickupDate;
     let author;
     const givenAway = false;
+
+    let autoDelete;
+
+    if (req.body.autoDelete) {
+        autoDelete = req.body.autoDelete;
+    }
+
+    if (autoDelete === 'Yes') {
+        console.log('===');
+        console.log('Auto delete the listing');
+        console.log('===');
+
+    } else if (autoDelete === 'No') {
+        console.log('===');
+        console.log('Do not auto delete the listing');
+        console.log('===');
+    }
 
     const {
         name,
@@ -230,33 +278,33 @@ router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
 
     console.log('========');
     console.log("PICKUPDATE: ", pickupDate);
-        if (pickupDate >= today || !pickupDate) {
-            console.log('it is in the future!');
-            Listing.create(newListing)
-                .then((createdListing) => {
+    if (pickupDate >= today || !pickupDate) {
+        console.log('it is in the future!');
+        Listing.create(newListing)
+            .then((createdListing) => {
 
-                    User.update({
-                            _id: author
-                        }, {
-                            $push: {
-                                createdListings: createdListing._id
-                            }
-                        })
-                        .then(() => {
-                            // once the item has been created, redirects the user to the item description page. How do I pass a success message in this case?
-                            res.redirect(`/listings/${createdListing._id}`);
-                        });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    res.redirect('/listings/add');
-                });
-        } else if (pickupDate <= today) {
-            console.log('it is in the past');
-            res.redirect('/listings/add');
-        }
-        console.log('========');
-    
+                User.update({
+                        _id: author
+                    }, {
+                        $push: {
+                            createdListings: createdListing._id
+                        }
+                    })
+                    .then(() => {
+                        // once the item has been created, redirects the user to the item description page. How do I pass a success message in this case?
+                        res.redirect(`/listings/${createdListing._id}`);
+                    });
+            })
+            .catch((err) => {
+                console.log(err);
+                res.redirect('/listings/add');
+            });
+    } else if (pickupDate <= today) {
+        console.log('it is in the past');
+        res.redirect('/listings/add');
+    }
+    console.log('========');
+
 
 
 });

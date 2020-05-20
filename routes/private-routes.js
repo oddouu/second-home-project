@@ -54,30 +54,30 @@ router.get('/my-wanted-listings', (req, res, next) => {
     }
 });
 
-router.get('/notifications', (req, res, next) => {
-    let currentUser = req.session.currentUser;
+// router.get('/notifications', (req, res, next) => {
+//     let currentUser = req.session.currentUser;
 
-    if (req.session.currentUser) {
-        User.find({
-                _id: currentUser._id,
-            })
-            .populate({
-                path: 'listingsToGive',
-                populate: {
-                    path: 'wantedBy'
-                }
-            })
-            .then(selectedUser => {
-                res.render('private/notifications', {
-                    listings: selectedUser[0].listingsToGive,
-                    currentUser
-                });
-            });
-    } else {
-        res.redirect('/login');
-    }
+//     if (req.session.currentUser) {
+//         User.find({
+//                 _id: currentUser._id,
+//             })
+//             .populate({
+//                 path: 'listingsToGive',
+//                 populate: {
+//                     path: 'wantedBy'
+//                 }
+//             })
+//             .then(selectedUser => {
+//                 res.render('private/notifications', {
+//                     listings: selectedUser[0].listingsToGive,
+//                     currentUser
+//                 });
+//             });
+//     } else {
+//         res.redirect('/login');
+//     }
 
-});
+// });
 
 
 // POST request to 'want' listing
@@ -208,22 +208,27 @@ router.post('/send-email/:receiverId', (req, res, next) => {
             sendToAddress = foundUser.email;
 
             const mailOptions = {
-                from: process.env.ETH_EMAIL_ADDRESS, // sender address
+                from: req.session.currentUser.email, // sender address
                 to: sendToAddress, // list of receivers
                 subject: `'[BRAND-NAME] You received a new email from ${req.session.currentUser.username}!`, // Subject line
                 html: message // plain text body
             };
 
             transporter.sendMail(mailOptions, function (err, info) {
-                if (err)
+                if (err) {
                     console.log(err);
-                else
-                    console.log(info);
-            });
-
-            res.render('private/notifications', {
-                successMessage: 'your email was sent successfully',
-
+                } else {
+                    console.log('The email I sent: ',info);
+                    // adds contacted user to the list of contacted users
+                    User.findByIdAndUpdate(req.session.currentUser._id, {
+                        $push: {
+                            contactedUsers: receiverId
+                        }
+                    }).then((updatedUser) => {
+                        console.log('The user I updated: ',updatedUser);
+                        res.redirect(`/listings/`);
+                    }).catch(err=>console.log(err));
+                }
             });
         });
 });

@@ -11,6 +11,7 @@ router.get("/", (req, res, next) => {
  
   if (req.session.currentUser) {
     currentUser = req.session.currentUser;
+    console.log('============>',req.session.currentUser)
   }
 
   Listing.find()

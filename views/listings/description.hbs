@@ -179,8 +179,21 @@
               style="border-radius: 50%; width: 100px; height: 100px; display: block; margin-left: auto; margin-right: auto"
               src="{{listing.author.imgPath}}" alt="">
           </div>
-          <h5 class="card-title"> <span class="text-info">Posted by: </span>{{listing.author.username}} </h5>
+          <h5 class="card-title
+          
+          {{#if isContacted}}
+        
+            text-warning
+        
+          {{/if}}
+          
+          "> <span class="text-info">Posted by: </span>{{listing.author.username}} </h5>
 
+          {{#if isContacted}}
+        
+            <span class="badge badge-pill badge-warning">You already contacted this user</span>
+        
+          {{/if}}
 
           {{#unless currentUser}}
           <p> <a href="/login">Login</a> or <a href="/signup">Signup</a> to contact this user!</p>

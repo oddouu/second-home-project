@@ -32,7 +32,12 @@ const userSchema = new Schema({
     imgPath: {
         type: String, // 
         default: './public/images/corgiswimflip.gif'
-    }
+    },
+
+    contactedUsers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 
     //will we need to extend the listing id as well, in order to have an array of what listings the offer has separate between "want" and "offer"[ing] as well? Default should be an empty array with a reference to listings collection, and specifically items with the same author id...
 }, {

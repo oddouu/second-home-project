@@ -38,7 +38,6 @@
             {{#unless emptyMessage}}
             {{#each listings}}
 
-
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <figure class="figure">
@@ -71,6 +70,12 @@
                                     {{this.wantedBy.length}}
                                 </span>
                             </small>
+
+                            {{#if this.isContacted}}
+                            <small class="text-muted">
+                                <span class="badge badge-pill badge-success">Success</span>
+                            </small>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

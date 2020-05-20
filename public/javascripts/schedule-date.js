@@ -21,13 +21,13 @@ $('input:checkbox').change(function () {
     console.log('checkbox ticked');
     $(pickupSelect).removeClass('d-none');
     $('#pickup-date').attr("required", "true");
-    $('#autoDeleteLabelGroup').removeClass('d-none');
+    // $('#autoDeleteLabelGroup').removeClass('d-none');
   } else {
     console.log('checkbox not ticked');
     $(pickupSelect).addClass('d-none');
     $('#pickup-date').removeAttr('required');
     $('#pickup-date').val(null);
-    $('#autoDeleteLabelGroup').addClass('d-none');
+    // $('#autoDeleteLabelGroup').addClass('d-none');
 
   }
 });
