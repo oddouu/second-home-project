@@ -11,6 +11,8 @@ const path = require('path');
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 
+
+
 hbs.registerHelper("date", require("helper-date"));
 
 /* const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -21,6 +23,8 @@ const User          = require("./models/user"); */
 // var mmnt = moment(date);
 // return mmnt.format(format);
 // });
+
+
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -116,7 +120,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 hbs.registerPartials(path.join(__dirname, '/views/partials'));
 
 // BOOTSTRAP SETUP
-app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+app.use('/css', express.static(__dirname + '/node_modules/bootswatch/dist/minty/'));
+
 
 // SUMMERNOTE SETUP
 app.use('/css', express.static(__dirname + '/node_modules/summernote/src/styles'));
