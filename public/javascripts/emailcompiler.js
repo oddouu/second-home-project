@@ -18,17 +18,17 @@ $(document).ready(function () {
   let listingNameField = $('#listing-name');
   let pickUpDate;
 
-  if ($('#pickupDateDefault')) {
+  if ($('#pickupDateDefault').innerText) {
      pickUpDate = $('#pickupDateDefault').attr('pickupDate');
      console.log(pickUpDate);
+     let listingName = listingNameField[0].attributes.listing.value; //listingname => aaa
+     let sendToName = sendToField[0].attributes.sendTo.value; //authormname => stefano
+     
+     HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}. Where would you like to meet?`;
+   
+     $('#message').summernote('pasteHTML', HTMLstring);
   }
 
-  let listingName = listingNameField[0].attributes.listing.value; //listingname => aaa
-  let sendToName = sendToField[0].attributes.sendTo.value; //authormname => stefano
-  
-  HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}. Where would you like to meet?`;
-
-  $('#message').summernote('pasteHTML', HTMLstring);
 });
 
 
@@ -47,7 +47,7 @@ $(pickUpDateInput).change(function () {
   console.log(pickUpDate);
   HTMLstring = `Hi ${sendToName}, I would like to come pick-up your ${listingName} on the ${pickUpDate}. Where would you like to meet?`;
 
-
+ 
   $('#message').summernote('pasteHTML', HTMLstring);
 
 });

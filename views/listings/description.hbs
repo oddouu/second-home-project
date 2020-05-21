@@ -190,9 +190,9 @@
           "> <span class="text-info">Posted by: </span>{{listing.author.username}} </h5>
 
           {{#if isContacted}}
-        
-            <span class="badge badge-pill badge-warning">You already contacted this user</span>
-        
+
+          <span class="badge badge-pill badge-warning">You already contacted this user</span>
+
           {{/if}}
 
           {{#unless currentUser}}
@@ -217,10 +217,10 @@
 
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
                 <label for="pickup-date" class="text-left">
-
                   <span class="text-success mr-2"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                  Schedule a pick-up <strong>date</strong>:</label>
-                <input type="date" id="pickup-date" name="pickup-date" class="form-control" required>
+                  Schedule a pick-up <strong>date</strong>:
+                </label>
+                <input type="date" id="pickup-date" name="pickup-date" required>
                 <input type="text" id="listing-name" listing="{{listing.name}}" class="d-none">
               </div>
 
@@ -230,10 +230,6 @@
                   Write here your <strong>email</strong>:</label>
                 <textarea name="message" class="message form-control" id="message" cols="20" rows="10"
                   class="text-left">
-
-
-
-
                   </textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
@@ -251,11 +247,13 @@
             <hr>
             <p class="card-text pt-4 mt-4">It looks like the author scheduled a pickup date for the
 
-             <span id="pickupDateDefault" pickupDate="{{date listing.pickupDate "DD-MM-YYYY"}}"> {{date listing.pickupDate "DD-MM-YYYY"}} </span>
+              <span id="pickupDateDefault" pickupDate="{{date listing.pickupDate "DD-MM-YYYY"}}">
+                {{date listing.pickupDate "DD-MM-YYYY"}} </span>
 
               . Why don't you send an email to
 
-              <span id="send-to" sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
+              <span id="send-to"
+                sendTo="{{listing.author.username}}"><strong>{{listing.author.username}}</strong></span>?</p>
 
             <form action="/send-email/{{listing.author._id}}" method="POST" class="form-signin ">
               <input type="date" id="default-date" value={{listing.pickupDate}} name="pickup-date" class="d-none">
