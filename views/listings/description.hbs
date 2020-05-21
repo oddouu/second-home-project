@@ -187,7 +187,14 @@
         
           {{/if}}
           
-          "> <span class="text-info">Posted by: </span>{{listing.author.username}} </h5>
+          "> <span class="">Posted by: </span>{{listing.author.username}} </h5>
+          <p class="">in: <a class="text-info" href="/listings?category={{listing.category}}">{{listing.category}}
+            {{#if listing.subCategory}}
+            <span> > {{listing.subCategory}}</span>
+            {{/if}}
+            </a>
+          </p>
+
 
           {{#if isContacted}}
 

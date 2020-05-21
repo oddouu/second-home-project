@@ -23,7 +23,8 @@ router.get("/", (req, res, next) => {
           // passes categories to index view
            res.render("index", {
              currentUser,
-             uniqueCategories : uniqueCategories
+             uniqueCategories : uniqueCategories,
+             listings: ListingsArray
            });
          })
          .catch(err=>console.log(err));
