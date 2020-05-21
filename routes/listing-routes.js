@@ -157,7 +157,7 @@ router.get('/listings/:listingId/edit', (req, res) => {
             .then((retrievedListing) => {
                 res.render('listings/edit', {
                     listing: retrievedListing,
-                    currentUser: user
+                    currentUser
                 });
             });
     } else {
@@ -422,8 +422,15 @@ router.post('/listings/:listingId/delete', (req, res) => {
 // edit existing listing should be done only by user that posted the listing or admin
 router.post('/listings/:listingId/edit', (req, res) => {
     const listingId = req.params.listingId;
-    let author = req.session.currentUser._id;
+    let currentUser;
+    
 
+
+    if (req.session.currentUser) {
+        currentUser = req.session.currentUser;
+    } else {
+        res.redirect('/listings');
+    }
 
     const {
         name,
@@ -440,7 +447,6 @@ router.post('/listings/:listingId/edit', (req, res) => {
         name,
         description,
         listingType,
-        author,
         location,
         lat,
         lng,
@@ -452,9 +458,8 @@ router.post('/listings/:listingId/edit', (req, res) => {
         .populate('author')
         .then((foundListing) => {
 
-            if (foundListing.author._id == author) {
+            if (foundListing.author._id == currentUser._id) {
 
-                isCreator = true;
                 Listing.update({
                         _id: listingId
                     }, updatedListing)
