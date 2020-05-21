@@ -14,7 +14,7 @@
     <div class="container">
         <div class="row">
 
-
+            {{#unless emptyMessage}}
             {{#each listings}}
 
 
@@ -47,6 +47,17 @@
             </div>
 
             {{/each}}
+            {{/unless}}
+
+            {{#if emptyMessage}}
+
+            <div class="col-12 text-center d-flex flex-column justify-content-center align-items-center">
+                {{emptyMessage}}
+
+            <a href="/listings/add" class="btn btn-info py-3 my-3">Post a new one!</a>
+            </div>
+
+            {{/if}}
 
         </div>
     </div>

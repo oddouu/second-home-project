@@ -8,7 +8,7 @@ var mymap = L.map('map-container').setView([42, 12], 2);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-  maxZoom: 18,
+  maxZoom: 15,
   id: 'mapbox/streets-v11',
   tileSize: 512,
   zoomOffset: -1,

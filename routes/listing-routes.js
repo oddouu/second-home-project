@@ -9,12 +9,20 @@ const User = require("../models/User");
 
 // GET request to create new listing form
 router.get("/listings/add", (req, res) => {
-    const currentUser = req.session.currentUser;
+    let currentUser;
 
-    res.render("listings/create", {
-        currentUser,
-        createForm: true
-    });
+    if (req.session.currentUser) {
+        currentUser = req.session.currentUser;
+        res.render("listings/create", {
+            currentUser,
+            createForm: true
+        });
+
+    } else {
+        res.redirect('/login');
+    }
+
+
 });
 
 
@@ -26,11 +34,7 @@ router.get('/listings', (req, res) => {
     let wantMessage;
     let offerMessage;
     let currentUser;
-    let isContacted;
 
-    if (req.session.currentUser) {
-        currentUser = req.session.currentUser._id;
-    }
 
     if (queryType === 'Want') {
         wantMessage = 'Feeling like making someone happy today? Have a look at what people is looking for.';
@@ -38,78 +42,128 @@ router.get('/listings', (req, res) => {
         offerMessage = 'Satisfy your urge for free stuff. Check what people is giving away!';
     }
 
+    // if user is logged in
+    if (req.session.currentUser) {
+        currentUser = req.session.currentUser._id;
+        User.findById(currentUser)
+            .then((userLogged) => {
 
-    User.findById(currentUser)
-        .then((userLogged) => {
+                Listing.find()
+                    .populate('author')
+                    .then(allListings => {
 
-            Listing.find()
-                .populate('author')
-                .then(allListings => {
-
-                    //filters the array of objects based on the query in the url
-                    if (queryCategory) {
-                        allListings = allListings.filter(listing => listing.category === queryCategory);
-                    }
-
-                    if (queryType) {
-                        allListings = allListings.filter(listing => listing.listingType === queryType);
-                    }
-
-
-
-                    //checks if the current user is the listing's author. 
-                    //if it is, creates (and sets to true) the isAuthor property - which will be used on the view to conditionally render things
-                    allListings.forEach((listing) => {
-                        if (listing.author._id == currentUser) {
-                            listing.isAuthor = true;
+                        //filters the array of objects based on the query in the url
+                        if (queryCategory) {
+                            allListings = allListings.filter(listing => listing.category === queryCategory);
                         }
 
-                        let contactedUsers = userLogged.contactedUsers;
-                        // for each listing, iterates through the current user contactedUsers array and checks if the currentuser already contacted the author
+                        if (queryType) {
+                            allListings = allListings.filter(listing => listing.listingType === queryType);
+                        }
 
-                                                
-                        contactedUsers.forEach((userICouldHaveContacted) => {
-                            console.log('AN USER I COULD HAVE CONTACTED:',userICouldHaveContacted);
-                            console.log('THE AUTHOR ID:',listing.author._id);
-                            if (userICouldHaveContacted._id == listing.author._id) {
-                                
-                                listing.isContacted = true;
-                                console.log('==== LISTING: ', listing);
+
+
+                        //checks if the current user is the listing's author. 
+                        //if it is, creates (and sets to true) the isAuthor property - which will be used on the view to conditionally render things
+                        allListings.forEach((listing) => {
+                            if (listing.author._id == currentUser) {
+                                listing.isAuthor = true;
                             }
+
+                            let contactedUsers = userLogged.contactedUsers;
+                            // for each listing, iterates through the current user contactedUsers array and checks if the currentuser already contacted the author
+
+
+                            contactedUsers.forEach((userICouldHaveContacted) => {
+                                console.log('AN USER I COULD HAVE CONTACTED:', userICouldHaveContacted);
+                                console.log('THE AUTHOR ID:', listing.author._id);
+                                if (userICouldHaveContacted._id == listing.author._id) {
+
+                                    listing.isContacted = true;
+                                    console.log('==== LISTING: ', listing);
+                                }
+                            });
+
                         });
 
-                    });
+                        if (allListings === undefined || allListings.length == 0) {
+                            emptyMessage = 'Wow, such empty.';
+                        }
 
-                    if (allListings === undefined || allListings.length == 0) {
-                        emptyMessage = 'Wow, such empty.';
+                        res.render('listings/all-listings', {
+                            listings: allListings,
+                            currentUser,
+                            queryCategory,
+                            queryType,
+                            emptyMessage,
+                            wantMessage,
+                            offerMessage
+                        });
+
+                    }).catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        // if user is not logged in
+    } else {
+        Listing.find()
+            .populate('author')
+            .then(allListings => {
+
+                //filters the array of objects based on the query in the url
+                if (queryCategory) {
+                    allListings = allListings.filter(listing => listing.category === queryCategory);
+                }
+
+                if (queryType) {
+                    allListings = allListings.filter(listing => listing.listingType === queryType);
+                }
+
+
+
+                //checks if the current user is the listing's author. 
+                //if it is, creates (and sets to true) the isAuthor property - which will be used on the view to conditionally render things
+                allListings.forEach((listing) => {
+                    if (listing.author._id == currentUser) {
+                        listing.isAuthor = true;
                     }
 
-                    res.render('listings/all-listings', {
-                        listings: allListings,
-                        currentUser,
-                        queryCategory,
-                        queryType,
-                        emptyMessage,
-                        wantMessage,
-                        offerMessage
-                    });
+                });
 
-                }).catch(err => console.log(err));
-        }).catch(err => console.log(err));
+                if (allListings === undefined || allListings.length == 0) {
+                    emptyMessage = 'Wow, such empty.';
+                }
+
+                res.render('listings/all-listings', {
+                    listings: allListings,
+                    currentUser,
+                    queryCategory,
+                    queryType,
+                    emptyMessage,
+                    wantMessage,
+                    offerMessage
+                });
+
+            }).catch(err => console.log(err));
+    }
 });
 
 // GET form to edit existing listing
 router.get('/listings/:listingId/edit', (req, res) => {
     const listingId = req.params.listingId;
-    const user = req.session.currentUser._id;
+    let currentUser;
 
-    Listing.findById(listingId)
-        .then((retrievedListing) => {
-            res.render('listings/edit', {
-                listing: retrievedListing,
-                currentUser: user
+    if (req.session.currentUser) {
+        currentUser = req.session.currentUser._id;
+        Listing.findById(listingId)
+            .then((retrievedListing) => {
+                res.render('listings/edit', {
+                    listing: retrievedListing,
+                    currentUser: user
+                });
             });
-        });
+    } else {
+        res.redirect('/login');
+    }
+
 });
 
 // GET listing description

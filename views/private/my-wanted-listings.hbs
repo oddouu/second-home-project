@@ -13,7 +13,7 @@
   <div class="container">
     <div class="row">
 
-
+{{#unless emptyMessage}}
       {{#each listings}}
 
 
@@ -46,6 +46,17 @@
       </div>
 
       {{/each}}
+      {{/unless}}
+
+      {{#if emptyMessage}}
+      
+      <div class="col-12 text-center d-flex flex-column justify-content-center align-items-center">
+        {{emptyMessage}}
+      
+      <a href="/listings?listingType=Offer" class="btn btn-info my-3 py-3">Check all Offer listings</a>
+      </div>
+
+      {{/if}}
 
     </div>
   </div>

@@ -20,10 +20,18 @@ router.get('/my-posted-listings', (req, res, next) => {
             .populate('createdListings')
             .then(selectedUser => {
 
-                res.render('private/my-posted-listings', {
-                    listings: selectedUser[0].createdListings,
-                    currentUser
-                });
+                if (selectedUser[0].createdListings.length) {
+                    res.render('private/my-posted-listings', {
+                        listings: selectedUser[0].createdListings,
+                        currentUser
+                    });
+                } else {
+                    const emptyMessage = 'Wow, such empty.';
+                    res.render('private/my-posted-listings', {
+                        emptyMessage,
+                        currentUser
+                    });
+                }
             });
     } else {
         res.redirect('/login');
@@ -44,10 +52,19 @@ router.get('/my-wanted-listings', (req, res, next) => {
             })
             .populate('likedListings')
             .then(selectedUser => {
-                res.render('private/my-wanted-listings', {
-                    listings: selectedUser[0].likedListings,
-                    currentUser
-                });
+
+                if (selectedUser[0].likedListings.length) {
+                    res.render('private/my-wanted-listings', {
+                        listings: selectedUser[0].likedListings,
+                        currentUser
+                    });
+                } else {
+                    const emptyMessage = 'Wow, such empty.';
+                    res.render('private/my-wanted-listings', {
+                        emptyMessage,
+                        currentUser
+                    });
+                }
             });
     } else {
         res.redirect('/login');
@@ -218,16 +235,16 @@ router.post('/send-email/:receiverId', (req, res, next) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log('The email I sent: ',info);
+                    console.log('The email I sent: ', info);
                     // adds contacted user to the list of contacted users
                     User.findByIdAndUpdate(req.session.currentUser._id, {
                         $push: {
                             contactedUsers: receiverId
                         }
                     }).then((updatedUser) => {
-                        console.log('The user I updated: ',updatedUser);
+                        console.log('The user I updated: ', updatedUser);
                         res.redirect(`/listings/`);
-                    }).catch(err=>console.log(err));
+                    }).catch(err => console.log(err));
                 }
             });
         });

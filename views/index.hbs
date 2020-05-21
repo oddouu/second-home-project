@@ -6,6 +6,14 @@
         <h1 class="font-weight-light display-4">Second Home</h1>
         <p class="lead display-5">Give away the stuff you don't need anymore.</p>
         <p class=" display-5">{{#if currentUser}}Welcome {{currentUser.username}}! {{/if}}</p>
+
+        {{#unless currentUser}}
+        <a href="/signup" class="btn btn-primary">Get started</a>
+        {{/unless}}
+
+        {{#if currentUser}}
+        <a href="/my-wanted-listings" class="btn btn-secondary">Check your wishlist!</a>
+        {{/if}}
       </div>
     </div>
   </div>
@@ -15,47 +23,7 @@
 
 <section class="py-5 my-3">
   <div class="container">
-    <h2 class="font-weight-light">Page Content</h2>
-    <p>A platform for donating what no longer serves you, and for anyone that is looking (or just browsing) for a
-      special
-      something to get for free.
-      <br>
-      No personal cost + no environmental cost, and two happy parties.</p>
-    <p>A platform for donating what no longer serves you, and for anyone that is looking (or just browsing) for a
-      special
-      something to get for free.
-      <br>
-      No personal cost + no environmental cost, and two happy parties.</p>
-  </div>
-</section>
-
-<!-- Marketing messaging and featurettes
-  ================================================== -->
-<!-- Wrap the rest of the page in another container to center all the content. -->
-
-
-<div class="container marketing py-5 my-3">
-  <div class="row">
-    {{#each uniqueCategories}}
-    {{#if this}}
-    <div class="col-lg-4">
-      <a href="/listings?category={{this}}">
-        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
-        <title>{{this}}</title>
-        <rect width="100%" height="100%" fill="#5BC9B0" /><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#777" >{{this}}</text>
-      </svg>
-      </a>
-     {{!-- <h2 class="my-2 py-2">{{this}}</h2> --}}
-    </div><!-- /.col-lg-4 -->
-    {{/if}}
-    {{/each}}
-  </div><!-- /.row -->
-</div>
-
-<section class="py-5 my-3">
-  <div class="container">
-    <h2 class="font-weight-light">Page Content</h2>
+    <h2 class="font-weight-light">Limiting waste</h2>
     <p>A platform for donating what no longer serves you, and for anyone that is looking (or just browsing) for a
       special
       something to get for free.
@@ -76,31 +44,98 @@
       <p class="lead">Check the Want listings.</p>
       <a href="/listings/?listingType=Want" class="btn btn-primary">See more</a>
     </div>
-    <div class="bg-light shadow-sm mx-auto d-flex align-items-center justify-content-center" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
-    </div>
+    {{!-- <div class="bg-light shadow-sm mx-auto d-flex align-items-center justify-content-center"
+      style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+    </div> --}}
   </div>
 
   <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
     <div class="my-3 p-3">
       <h2 class="display-5">Offer</h2>
       <p class="lead">Have a look at the Offer listings</p>
-        <a href="/listings/?listingType=Offer" class="btn btn-primary">See more</a>
+      <a href="/listings/?listingType=Offer" class="btn btn-primary">See more</a>
     </div>
-    <div class="bg-info shadow-sm mx-auto d-flex align-items-center justify-content-center" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
-    </div>
+    {{!-- <div class="bg-info shadow-sm mx-auto d-flex align-items-center justify-content-center"
+      style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+    </div> --}}
   </div>
 </div>
+
+<section class="py-5 my-3">
+  <div class="container">
+    <h2 class="font-weight-light">Locations</h2>
+    <p>Check where our available listings are.</p>
+    <div id="map-container" class="py-3 my-3"></div>
+  </div>
+</section>
+
+
+<!-- Marketing messaging and featurettes
+  ================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+
+<div class="container marketing py-5 my-3">
+  <h2 class="font-weight-light">Categories</h2>
+  <p>These are the categories we currently have available.</p>
+  <div class="row py-3 my-3">
+
+    {{#each uniqueCategories}}
+    {{#if this}}
+    <div class="col-lg-4">
+      <a href="/listings?category={{this}}">
+        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140">
+          <title>{{this}}</title>
+          <rect width="100%" height="100%" fill="#5BC9B0" />
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#777">{{this}}</text>
+        </svg>
+      </a>
+      {{!-- <h2 class="my-2 py-2">{{this}}</h2> --}}
+    </div><!-- /.col-lg-4 -->
+    {{/if}}
+    {{/each}}
+  </div><!-- /.row -->
+</div>
+
+{{#unless currentUser}}
+<section class="pt-5 mt-5 pb-5 bg-primary">
+  <div class="container text-center">
+    <h2 class="font-weight-light">Still not convinced?</h2>
+    <p class="text-light">It's easier than it seems. You're just one click away.</p>
+    <div class="btn-group">
+      <a href="/signup" class="btn btn-secondary">Create an account</a>
+      <a href="/listings" class="btn btn-info">Check all listings</a>
+    </div>
+  </div>
+</section>
+{{/unless}}
+
+{{#if currentUser}}
+<section class="pt-5 mt-5 pb-5 bg-primary">
+  <div class="container text-center">
+    <h2 class="font-weight-light">Still here?</h2>
+    <p class="text-light">There are so many things to do in this website.</p>
+    
+      <form action="/{{currentUser._id}}/destroy" class="btn-group" method="POST">
+        <button type="submit" class="btn btn-danger p-4">Log out and destroy my account forever <br> with all the listings I posted <br>and all my beautiful memories</button>
+      </form>
+
+
+  </div>
+</section>
+{{/if}}
 
 
 {{#each listings}}
 <span class="d-none" loc="{{this.location}}" listId={{this.id}} lat={{this.lat}} lng={{this.lng}}></span>
 {{/each}}
 
-<div id="map-container" class="py-3 my-3"></div>
+
 <!-- Footer -->
 <footer id="sticky-footer" class="py-4 bg-primary text-white-50">
   <div class="container text-center">
-    <small>Copyright &copy; Your Website</small>
+    <small>secondHome - made @ Ironhack by Stefano & Yuri</small>
   </div>
 </footer>
 <!-- /. Footer -->
