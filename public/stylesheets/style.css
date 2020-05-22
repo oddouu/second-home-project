@@ -7,14 +7,6 @@ body {
 a {
   color: #00B7FF; }
 
-.masthead {
-  height: 100vh;
-  min-height: 500px;
-  background-image: url("https://source.unsplash.com/BtbjCFUvBXs/1920x1080");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat; }
-
 #page-content {
   flex: 1 0 auto; }
 
@@ -203,8 +195,11 @@ a {
 /* MARKETING CONTENT
 -------------------------------------------------- */
 /* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
-  margin-bottom: 1.5rem;
+.marketing .col-lg-3 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
   text-align: center; }
 
 .marketing h2 {
@@ -271,7 +266,7 @@ a {
   align-items: center; }
 
 #map-container {
-  height: 250px; }
+  height: 300px; }
 
 #upload-new-image {
   line-height: 0; }
@@ -287,6 +282,26 @@ a {
 
 .want-offer-icon {
   width: 400px;
-  height: 400px; }
+  height: 400px;
+  color: white; }
+
+.invert {
+  filter: invert(100%); }
+
+#category-list {
+  background-image: url("/images/categories-photo.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5; }
+
+.masthead {
+  height: 100vh;
+  min-height: 500px;
+  background-color: #d5d0e5;
+  background-image: linear-gradient(315deg, rgba(251, 140, 151, 0.7) 0%, #f3e6e8 70%); }
+
+.masthead .btn {
+  color: wheat; }
 
 /*# sourceMappingURL=style.css.map */
