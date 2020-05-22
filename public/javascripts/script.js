@@ -30,3 +30,8 @@ if ($('.count')) {
   });
 
 }
+
+$('.btn').on('click',function() {
+  $('.btn').append(`<span class="spinner-grow spinner-grow-sm d-none" role="status" aria-hidden="true">Loading... </span>`);
+  console.log(this)
+});

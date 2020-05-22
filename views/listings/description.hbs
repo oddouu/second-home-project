@@ -18,7 +18,8 @@
                 Upload new image</label>
             </div>
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="submit" id="upload-new-image">Submit</button>
+              <button class="btn btn-outline-secondary" type="submit" id="upload-new-image">
+                Submit</button>
             </div>
           </form>
         </span>
@@ -92,16 +93,14 @@
 
               <div class="d-flex flex-column">
                 <div class="btn-group flex-row">
-                  <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-secondary">EDIT</a>
+                  <a href="/listings/{{listing._id}}/edit" class="btn btn-sm btn-outline-info">EDIT</a>
 
                   <form action="/listings/{{listing._id}}/delete" class="btn-group" method="POST">
                     <button type="submit" class="btn btn-sm btn-outline-danger">DELETE</button>
                   </form>
-                </div>
-                <div class="d-flex justify-content-center">
-                  <form action="/listings/{{listing._id}}/given-away" class="" method="POST">
+                  <form action="/listings/{{listing._id}}/given-away" class="btn-group" method="POST">
                     <button type="submit"
-                      class="px-3 btn btn-sm btn-outline-success {{#if listing.givenAway}}active px-4{{/if}}">
+                      class="btn btn-sm btn-outline-warning {{#if listing.givenAway}}active px-4{{/if}}">
                       {{#unless listing.givenAway}}
                       GIVEN AWAY
                       {{/unless}}
@@ -111,8 +110,10 @@
 
                     </button>
                   </form>
-
                 </div>
+                {{!-- <div class="d-flex justify-content-center">
+
+                </div> --}}
               </div>
 
 
@@ -240,7 +241,7 @@
                   </textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
-                <input type="submit" class="btn btn-primary" value="Send">
+                <button id="send-email" type="submit" class="btn btn-primary" value="Send"> Send </button>
                 <div id="error" class="d-none">
                   <p class="text-danger">Please select a date in the future</p>
                 </div>
@@ -276,7 +277,6 @@
                   class="text-left"></textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
-                <button id="send-email" type="submit" class="btn btn-primary">Send email</button>
               </div>
               <div id="error" class="d-none">
                 <p class="text-danger">Please select a date in the future</p>
