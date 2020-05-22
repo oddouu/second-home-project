@@ -62,7 +62,7 @@
 
           <div class="d-flex flex-row justify-content-between pl-2 mr-4 ml-2 pr-4">
             <div class="">
-              <p class="text-info text-rigth">{{listing.listingType}}
+              <p class="text-info text-rigth" id="listing-type">{{listing.listingType}}
 
                 {{#if listing.givenAway}}
                 <span class="text-danger ml-2">This item has already been given away</span>
@@ -241,6 +241,9 @@
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
                 <input type="submit" class="btn btn-primary" value="Send">
+                <div id="error" class="d-none">
+                  <p class="text-danger">Please select a date in the future</p>
+                </div>
               </div>
             </form>
 
@@ -273,7 +276,10 @@
                   class="text-left"></textarea>
               </div>
               <div class="input-group d-flex flex-column justify-content-center py-2 my-2">
-                <input type="submit" class="btn btn-primary" value="Send">
+                <button id="send-email" type="submit" class="btn btn-primary">Send email</button>
+              </div>
+              <div id="error" class="d-none">
+                <p class="text-danger">Please select a date in the future</p>
               </div>
             </form>
 
