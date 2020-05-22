@@ -358,11 +358,28 @@ a {
 }
 
 #map-container {
-  
+
   height: 250px;
 
 }
 
 #upload-new-image {
   line-height: 0;
+}
+
+
+#want-offer-section {
+  background-image: url("/images/want-offer-photo.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.category {
+  opacity: .97;
+}
+
+.want-offer-icon {
+width: 400px;
+height: 400px;
 }

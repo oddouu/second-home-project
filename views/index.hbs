@@ -25,59 +25,63 @@
   <div class="container">
     <h2 class="font-weight-light text-success"><span><i class="fas fa-seedling text-success"></i></span>Limiting waste
     </h2>
-    <p>A platform for donating what no longer serves you, and for anyone that is looking (or just browsing) for a
+    <p>
+      A platform for donating what no longer serves you, and for anyone that is looking (or just browsing) for a
       special
       something to get for free.
-      <br>
-      No personal cost + no environmental cost, and two happy parties.</p>
-    <p>A platform for donating what no longer serves you, and for anyone that is looking (or just browsing) for a
-      special
-      something to get for free.
-      <br>
-      No personal cost + no environmental cost, and two happy parties.</p>
+    </p>
+    <p>
+      No personal cost + no environmental cost, and two happy parties.
+    </p>
   </div>
 </section>
 
 <div class="jumbotron text-center bg-primary my-3">
 
-  <h5 class="text-light display-5">The listing published on this website are <p class="display-4 count m-3 p-3 text-warning font-weight-bold">{{listings.length}}</p></h5>
+  <h5 class="text-light display-5">The listing published on this website are <p
+      class="display-4 count m-3 p-3 text-warning font-weight-bold">{{listings.length}}</p>
+  </h5>
   <p class="text-light">We arranged them in a few different fashions. Have fun while exploring!</p>
 
 </div>
 
 
-
-<div class="d-md-flex flex-md-equal w-100 my-md-4 pl-md-4">
-  <div class="bg-info mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
-    <div class="my-3 py-3">
-      <h2 class="display-5 text-light">Want</h2>
-      <p class="my-3 py-3 ml-4 pl-4"> <i>“As soon as you stop wanting something, you get it.”</i></p>
-      <p class="mr-5 pr-5  mb-3 pb-3 text-right">- Andy Warhol</p>
-      <a href="/listings/?listingType=Want" class="btn  btn-warning">See more</a>
-    </div>
-    {{!-- <div class="bg-light shadow-sm mx-auto d-flex align-items-center justify-content-center"
+<section class="jumbotron" id="want-offer-section">
+  <div id="want-category" class="category d-md-flex flex-md-equal w-100 my-md-4 pl-md-4">
+    <div class="bg-info mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+      <div class="my-3 py-3">
+        <div><img class="img-fluid m-2 p-2" src="/images/want-icon.png" alt=""></div>
+        <h2 class="display-5 text-light">Want</h2>
+        <p class="my-3 py-3 ml-4 pl-4"> <i>“As soon as you stop wanting something, you get it.”</i></p>
+        <p class="mr-5 pr-5  mb-3 pb-3 text-right">- Andy Warhol</p>
+        <a href="/listings/?listingType=Want" class="btn  btn-warning">See more</a>
+      </div>
+      {{!-- <div class="bg-light shadow-sm mx-auto d-flex align-items-center justify-content-center"
       style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
     </div> --}}
-  </div>
-
-  <div class="bg-warning mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-    <div class="my-3 p-3">
-      <h2 class="display-5 text-dark">Offer</h2>
-      <p class="my-3 py-3 text-dark"> <i>“Earth provides enough to satisfy every man's needs, but not every man's
-          greed.”</i></p>
-      <p class="mr-4 pr-4 mb-3 pb-3 text-right text-dark">- Mahatma Gandhi</p>
-      <a href="/listings/?listingType=Offer" class="btn btn-info">See more</a>
     </div>
-    {{!-- <div class="bg-info shadow-sm mx-auto d-flex align-items-center justify-content-center"
+
+    <div id="offer-category" class="category bg-warning mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+      <div class="my-3 p-3">
+        <div><img class="img-fluid m-2 p-2" src="/images/offer-icon.png" alt=""></div>
+        <h2 class="display-5 text-dark">Offer</h2>
+        <p class="my-3 py-3 text-dark"> <i>“Earth provides enough to satisfy every man's needs, but not every man's
+            greed.”</i></p>
+        <p class="mr-4 pr-4 mb-3 pb-3 text-right text-dark">- Mahatma Gandhi</p>
+        <a href="/listings/?listingType=Offer" class="btn btn-info">See more</a>
+      </div>
+      {{!-- <div class="bg-info shadow-sm mx-auto d-flex align-items-center justify-content-center"
       style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
     </div> --}}
+    </div>
   </div>
-</div>
+</section>
+
 
 <section class="py-5 my-3">
   <div class="container">
     <h2 class="font-weight-light">Locations</h2>
-    <p>Check where our available listings are.</p>
+    <p>Check <span class="text-secondary">where</span> our available listings are.</p>
     <div id="map-container" class="py-3 my-3"></div>
   </div>
 </section>
@@ -90,7 +94,7 @@
 
 <div class="container marketing py-5 my-3">
   <h2 class="font-weight-light">Categories</h2>
-  <p>These are the categories we currently have available.</p>
+  <p>These are the <span class="text-primary">categories</span> we currently have available.</p>
   <div class="row py-3 my-3">
 
     {{#each uniqueCategories}}
