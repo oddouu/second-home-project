@@ -255,6 +255,8 @@ router.get("/listings/:listingId", (req, res) => {
 // POST add new listing
 router.post('/listings/add', uploadCloud.single('image'), (req, res) => {
 
+    const AlgoliaAppId = process.env.ALGOLIA_APP_ID;
+    const AlgoliaApiKey = process.env.ALGOLIA_API_KEY;
     const today = new Date();
     let pickupDate;
     let author;

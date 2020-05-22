@@ -4,7 +4,8 @@
         {{#unless queryCategory}}
         {{#unless queryType}}
         <h1>All Listings</h1>
-        <p class="lead text-muted">A clean list of all the listings we currently have online. No filters. Just all of them at once.</p>
+        <p class="lead text-muted">A clean list of all the listings we currently have online. No filters. Just all of
+            them at once.</p>
         {{/unless}}
         {{/unless}}
 
@@ -33,6 +34,7 @@
 
 <div class="album py-5 bg-light">
     <div class="container">
+
         <div class="row">
 
             {{#unless emptyMessage}}
@@ -46,9 +48,14 @@
                         object-fit: cover;
                         {{#if this.givenAway}}
                          filter: grayscale(100%);
-                        {{/if}}" 
-                        alt="{{this.name}}">
-                        <figcaption class="figure-caption text-right pr-3 mr-3 my-2">{{this.listingType}}</figcaption>
+                        {{/if}}" alt="{{this.name}}">
+                        <figcaption class="d-flex justify-content-between mt-3 mx-3 px-1">
+                            <figcaption class="figure-caption d-inline">
+                                {{date this.created_at "DD-MM-YYYY - HH:MM"}}</figcaption>
+                            <figcaption class="d-inline figure-caption text-right text-info">{{this.listingType}}
+                            </figcaption>
+
+                        </figcaption>
                     </figure>
 
                     <div class="card-body">
@@ -56,8 +63,8 @@
                             {{#if this.givenAway}}
                             <span class="ml-2 text-secondary"><i> - Given away</i></span>
                             {{/if}}
-                        </p> 
-                        
+                        </p>
+
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <a href="/listings/{{this._id}}" class="btn btn-sm btn-outline-secondary">See more</a>

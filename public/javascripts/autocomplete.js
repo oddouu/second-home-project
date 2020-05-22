@@ -9,7 +9,7 @@ let inputLng = $('#input-lng');
 (function () {
   var placesAutocomplete = places({
     appId: "plGMYT804R6Q",
-    apiKey: "0d1f1cf006a8fd8eaf5421fdbe89e01d",
+    apiKey: "019d131c0d30d2648a174f94a7458ebe",
     container: document.querySelector("#input-map"),
     style: false,
   });
