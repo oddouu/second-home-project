@@ -1,15 +1,10 @@
 ﻿[{
         "L1index": "1",
-        "L1": "Animals"
+        "L1": "Pet Supplies"
     },
     {
         "L2index": "1",
-        "L1": "Animals",
-        "L2": "Live Animals"
-    },
-    {
-        "L2index": "1",
-        "L1": "Animals",
+        "L1": "Pet Supplies",
         "L2": "Pet Supplies"
     },
     {
@@ -59,11 +54,6 @@
     {
         "L1index": "4",
         "L1": "Baby and Toddler"
-    },
-    {
-        "L2index": "4",
-        "L1": "Baby and Toddler",
-        "L2": "Baby Gift Sets"
     },
     {
         "L2index": "4",
