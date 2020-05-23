@@ -211,6 +211,7 @@
 
 
           {{#unless isCreator}}
+          {{#unless listing.givenAway}}
           {{#if currentUser}}
 
           {{#unless listing.pickupDate}}
@@ -288,6 +289,7 @@
 
           {{/if}}
           {{/if}}
+          {{/unless}}
           {{/unless}}
         </div>
       </div>

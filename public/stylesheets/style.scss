@@ -398,10 +398,14 @@ a {
   height: 100vh;
   min-height: 500px;
   background-color: #d5d0e5;
-  background-image: linear-gradient(315deg, rgba(251, 140, 151, 0.7) 0%, #f3e6e8 70%);
+  background-image: linear-gradient(315deg, rgba(251, 140, 151, 0.26) 0%, #f3e6e8 70%);
 }
 
-.masthead .btn {
-  color: wheat;
-
+#title {
+  text-shadow: 4px 4px #FF919A;
+  background-color: #bbff99;
+  background-image: linear-gradient(319deg, #bbff99 0%, #ffec99 37%, #ff9999 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }

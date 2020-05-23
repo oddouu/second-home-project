@@ -50,8 +50,11 @@
                          filter: grayscale(100%);
                         {{/if}}" alt="{{this.name}}">
                         <figcaption class="d-flex justify-content-between mt-3 mx-3 px-1">
-                            <figcaption class="figure-caption d-inline">
-                                {{date this.created_at "DD-MM-YYYY - HH:MM"}}</figcaption>
+                            <figcaption class="figure-caption d-inline text-warning">
+                                <span>{{date this.created_at "DD-MM-YYYY"}}</span>
+                                <span> at </span>
+                                <span>{{date this.created_at "HH:MM"}}</span>
+                            </figcaption>
                             <figcaption class="d-inline figure-caption text-right text-info">{{this.listingType}}
                             </figcaption>
 
