@@ -13,7 +13,7 @@
   <div class="container">
     <div class="row">
 
-{{#unless emptyMessage}}
+      {{#unless emptyMessage}}
       {{#each listings}}
 
 
@@ -23,7 +23,16 @@
             <img src="{{this.imgPath}}" class="card-img-top figure-img img-fluid rounded" style="width : 100%;
                         height: 15vw; 
                         object-fit: cover;" alt="{{this.name}}">
-            <figcaption class="figure-caption text-right pr-3 mr-3 my-2">{{this.listingType}}</figcaption>
+            <figcaption class="d-flex justify-content-between mt-3 mx-3 px-1">
+              <figcaption class="figure-caption d-inline text-warning">
+                <span>{{date this.created_at "DD-MM-YYYY"}}</span>
+                <span> at </span>
+                <span>{{date this.created_at "HH:MM"}}</span>
+              </figcaption>
+              <figcaption class="d-inline figure-caption text-right text-info">{{this.listingType}}
+              </figcaption>
+
+            </figcaption>
           </figure>
 
           <div class="card-body">
@@ -36,7 +45,7 @@
                 {{/if}}
               </div>
               <small class="text-muted">Wanted
-                <span class="badge badge-dark">
+                <span class="badge badge-secondary">
                   {{this.wantedBy.length}}
                 </span>
               </small>
@@ -49,11 +58,11 @@
       {{/unless}}
 
       {{#if emptyMessage}}
-      
+
       <div class="col-12 text-center d-flex flex-column justify-content-center align-items-center">
         {{emptyMessage}}
-      
-      <a href="/listings?listingType=Offer" class="btn btn-info my-3 py-3">Check all Offer listings</a>
+
+        <a href="/listings?listingType=Offer" class="btn btn-info my-3 py-3">Check all Offer listings</a>
       </div>
 
       {{/if}}
