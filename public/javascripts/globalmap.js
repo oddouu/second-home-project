@@ -3,6 +3,7 @@ let lat;
 let lng;
 let id;
 let loc;
+let listName;
 
 var mymap = L.map('map-container').setView([42, 12], 2);
 
@@ -23,6 +24,7 @@ for (let i = 0; i < arrayOfHiddenSpans.length; i++) {
     lat = arrayOfHiddenSpans[i].attributes.lat.value;
     lng = arrayOfHiddenSpans[i].attributes.lng.value;
     id = arrayOfHiddenSpans[i].attributes.listId.value;
+    listName = arrayOfHiddenSpans[i].attributes.listName.value;
     loc = arrayOfHiddenSpans[i].attributes.loc.value;
 
     var marker = L.marker([lat, lng], {
@@ -31,7 +33,7 @@ for (let i = 0; i < arrayOfHiddenSpans.length; i++) {
       // fillOpacity: 0.5,
       // radius: 500
     }).addTo(mymap)
-      .bindPopup(`<p>${loc}</p><a href="/listings/${id}">go to the listing</a>`);
+      .bindPopup(`<h5>${listName}</h5><p>${loc}</p><a href="/listings/${id}">go to the listing</a>`);
     
   }
 }

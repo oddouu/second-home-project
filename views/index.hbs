@@ -3,8 +3,8 @@
   <div class="container h-100">
     <div class="row h-100 align-items-center">
       <div class="col-12 text-center">
-        <h1 id="title" class="display-2 font-weight-bold">Second Home</h1>
-        <p class="lead display-5">Give away the stuff you don't need anymore.</p>
+        <h1 id="title" class="display-3 font-weight-bold">Second Home</h1>
+        <p class="lead">Give away the stuff you don't need anymore.</p>
         <p class=" display-5">{{#if currentUser}}Welcome {{currentUser.username}}! {{/if}}</p>
 
         {{#unless currentUser}}
@@ -174,7 +174,7 @@
 
 
 {{#each listings}}
-<span class="d-none" loc="{{this.location}}" listId={{this.id}} lat={{this.lat}} lng={{this.lng}}></span>
+<span class="d-none" loc="{{this.location}}" listName="{{this.name}}" listId={{this.id}} lat={{this.lat}} lng={{this.lng}}></span>
 {{/each}}
 
 
